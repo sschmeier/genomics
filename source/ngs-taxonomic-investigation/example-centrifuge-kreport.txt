@@ -1,0 +1,20 @@
+  0.00	0	0	U	0	unclassified
+ 78.74	163	0	-	1	root
+ 78.74	163	0	-	131567	  cellular organisms
+ 78.74	163	0	D	2	    Bacteria
+ 54.67	113	0	P	1224	      Proteobacteria
+ 36.60	75	0	C	1236	        Gammaproteobacteria
+ 31.18	64	0	O	91347	          Enterobacterales
+ 30.96	64	0	F	543	            Enterobacteriaceae
+ 23.89	49	0	G	561	              Escherichia
+ 23.37	48	48	S	562	                Escherichia coli
+  0.40	0	0	S	564	                Escherichia fergusonii
+  0.12	0	0	S	208962	                Escherichia albertii
+  3.26	6	0	G	570	              Klebsiella
+  3.14	6	6	S	573	                Klebsiella pneumoniae
+  0.12	0	0	S	548	                [Enterobacter] aerogenes
+  2.92	6	0	G	620	              Shigella
+  1.13	2	2	S	623	                Shigella flexneri
+  0.82	1	1	S	624	                Shigella sonnei
+  0.50	1	1	S	1813821	                Shigella sp. PAMC 28760
+  0.38	0	0	S	621	                Shigella boydii

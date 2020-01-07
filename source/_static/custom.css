@@ -1,0 +1,4 @@
+/* fix padding on upper-right buttons */
+.wy-breadcrumbs li a:first-child {
+    padding-left: 5px;
+}

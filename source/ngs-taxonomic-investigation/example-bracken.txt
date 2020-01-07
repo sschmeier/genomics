@@ -1,0 +1,9 @@
+name    taxonomy_id     taxonomy_lvl    kraken_assigned_reads   added_reads     new_est_reads   fraction_total_reads
+Streptococcus sp. oral taxon 431        712633  S       2       0       2       0.00001
+Neorhizobium sp. NCHU2750       1825976 S       0       0       0       0.00000
+Pseudomonas sp. MT-1    150396  S       0       0       0       0.00000
+Ahniella affigens       2021234 S       1       0       1       0.00000
+Sinorhizobium sp. CCBAU 05631   794846  S       0       0       0       0.00000
+Cohnella sp. 18JY8-7    2480923 S       1       0       1       0.00000
+Bacillus velezensis     492670  S       4       4       8       0.00002
+Actinoplanes missouriensis      1866    S       2       8       10      0.00002

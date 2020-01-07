@@ -5,7 +5,6 @@
 #
 # Note that not all possible configuration values are present. All configuration
 # values have a default.
-
 import sys
 import os
 import shlex
@@ -26,7 +25,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # -- General configuration ------------------------------------------------
 
-html_baseurl = 'https://genomics.netlify.com/'
+#html_baseurl = 'https://genomics.netlify.com/'
 
 # Absolute path of conf.py
 conf_abs_path = os.path.abspath(__file__)
@@ -54,8 +53,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Genomics Tutorial'
-copyright = '2020, Sebastian Schmeier'
-author = 'sschmeier'
+copyright = '2016-2020, Sebastian Schmeier (https://sschmeier.com)'
+author = 'Sebastian Schmeier'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -71,7 +70,7 @@ release = '2020.1.1'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'en'
+language = None
 
 #locale_dirs = ['../l10n/locales/']
 
@@ -83,12 +82,18 @@ exclude_patterns = []
 pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
+todo_include_todos = True
 
 # Omit any prefix values from the static 404 URLs
 notfound_no_urls_prefix = True
 
 html_css_files = ['custom.css']
+
+# Use automatic figure numbering
+numfig = True
+# you need to specify all three in this section otherwise throws error for latex
+# numfig_format={'figure': 'Figure %s', 'table': 'Table %s', 'code-block': 'Listing %s'}
+# numfig_secnum_depth = 1
 
 
 # -- Options for HTML output ----------------------------------------------
@@ -102,10 +107,10 @@ html_theme_path = ["../_themes", ]
 
 html_theme_options = {
     'versions': [
-        ("latest", "/en/latest")
+        ("latest", "/")
     ],
     'languages': [
-        ("en", "/en/latest"),
+        ("en", "/"),
 #        ("de", "/de/latest"),
     ],
     'current_version': version
@@ -114,7 +119,7 @@ html_theme_options = {
 html_context = {
   'display_github': True,
   'github_user': 'sschmeier',
-  'github_repo': 'genomics-tutorial-2',
+  'github_repo': 'genomics',
   'github_version': 'master/source/'
 }
 
@@ -158,28 +163,104 @@ htmlhelp_basename = 'GenomicsDoc'
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
-
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
-
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
-
-# Latex figure (float) alignment
-#'figure_align': 'htbp',
+    # The paper size ('letterpaper' or 'a4paper').
+    #
+    "papersize": "a4paper",
+    # The font size ('10pt', '11pt' or '12pt').
+    #
+    "pointsize": "10pt",
+    # Additional stuff for the LaTeX preamble.
+    #
+    # 'preamble': '',
+    "preamble": r"""
+        \usepackage{charter}
+        \usepackage[defaultsans]{lato}
+        \usepackage{inconsolata}
+    	""",
+    # Latex figure (float) alignment
+    #
+    #'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'Genomics.tex', 'Genomics Tutorial',
-   'sschmeier', 'manual'),
+      (
+        master_doc,
+        'Genomics.tex',
+        'Computational Genomics Tutorial',
+        'Sebastian Schmeier (https://sschmeier.com)',
+        'manual',
+    ),
 ]
 
+# The name of an image file (relative to this directory) to place at the top of
+# the title page.
+#
+latex_logo = "images/icon-latex.png"
 
+# For "manual" documents, if this is true, then toplevel headings are parts,
+# not chapters.
+#
+latex_use_parts = False
+
+# If true, show page references after internal links.
+#
+latex_show_pagerefs = True
+
+# If true, show URL addresses after external links.
+# one of:
+# 'no' – do not display URLs (default)
+# 'footnote' – display URLs in footnotes
+# 'inline' – display URLs inline in parentheses
+
+latex_show_urls = "footnote"
+
+# Documents to append as an appendix to all manuals.
+#
+# latex_appendices = []
+
+# It false, will not define \strong, \code, 	itleref, \crossref ... but only
+# \sphinxstrong, ..., \sphinxtitleref, ... To help avoid clash with user added
+# packages.
+#
+# latex_keep_old_macro_names = True
+
+# If false, no module index is generated.
+#
+# latex_domain_indices = True
+
+
+# -- Options for manual page output ---------------------------------------
+
+# One entry per manual page. List of tuples
+# (source start file, name, description, authors, manual section).
+man_pages = [
+    (master_doc, "Genomics Tutorial", u"Genomics Tutorial Documentation", [author], 1)
+]
+
+# If true, show URL addresses after external links.
+#
+# man_show_urls = False
+
+
+# -- Options for Texinfo output -------------------------------------------
+
+# Grouping the document tree into Texinfo files. List of tuples
+# (source start file, target name, title, author,
+#  dir menu entry, description, category)
+texinfo_documents = [
+    (
+        master_doc,
+        "Genomics",
+        u"Computational Genomics Tutorial",
+        author,
+        "Computational Genomics Tutorial",
+        "Computational Genomics Tutorial Content.",
+        "teaching",
+    ),
+]
 rst_epilog = """
 .. |fileanc| replace:: ancestor
 .. |fileanc1| replace:: ancestor-R1
@@ -219,8 +300,6 @@ rst_epilog = """
 .. |multiqc| replace:: `MultiQC <https://multiqc.info/>`__
 """
 
-# Use automatic figure numbering
-numfig = True
-# you need to specify all three in this section otherwise throws error for latex
-# numfig_format={'figure': 'Figure %s', 'table': 'Table %s', 'code-block': 'Listing %s'}
-# numfig_secnum_depth = 1
+# to be able to use two dashes in my own blocks I turn off smartypants
+# html_use_smartypants=False
+smart_quotes = False

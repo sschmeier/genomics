@@ -1,0 +1,10 @@
+name	taxID	taxRank	genomeSize	numReads	numUniqueReads	abundance
+Pseudomonas aeruginosa	287	species	22457305	1	0	0.0
+Pseudomonas fluorescens	294	species	14826544	1	1	0.0
+Pseudomonas putida	303	species	6888188	1	1	0.0
+Ralstonia pickettii	329	species	6378979	3	2	0.0
+Pseudomonas pseudoalcaligenes	330	species	4691662	1	1	0.0171143
+Acinetobacter baumannii	470	species	11595472	1	1	0.0
+Alcaligenaceae	506	family	0	1	0	0.0
+Citrobacter freundii	546	species	16193243	1	1	0.0
+[Enterobacter] aerogenes	548	species	10750562	1	0	0.0
