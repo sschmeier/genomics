@@ -1,6 +1,6 @@
 language: python
 python:
-  - "3.6"
+  - "3.5" # to make it similar to netlify xenial py3.5
 
 sudo: false
 cache: pip
