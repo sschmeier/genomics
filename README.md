@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/sschmeier/genomics.svg?branch=master)](https://travis-ci.org/sschmeier/genomics) [![PyUp](https://pyup.io/repos/github/sschmeier/genomics/shield.svg)](https://pyup.io/repos/github/sschmeier/genomics/) [![ReadTheDocs](https://readthedocs.org/projects/genomics/badge/?version=latest)](https://genomics.readthedocs.io/en/latest/?badge=latest)
 
-
 A computational genomics tutorial with continuous integration, using [Travis-CI](https://travis-ci.org/),
 and deployment, using [Netlify](https://www.netlify.com/), and [sphinx](http://www.sphinx-doc.org/).
 
