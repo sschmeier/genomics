@@ -17,12 +17,12 @@ The production version of the deployed site:
 - Netlify runs Ubuntu Xenial 16.04 build, with a python3.5 installed.
 - Thus, need to use py3.5
 
-## Installing Locally
+## Local development of tutorial
 
 1. Set up a [python virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtualenv/)
    named `venv` => `pip install virtualenv; virtualenv --python=python3.5 venv`.
 2. Activate the `venv` environment => `source venv/bin/activate`
-3. Install the dependencies inside of it by running  `pip install -r requirements.txt`.
+3. Install the dependencies inside of it by running  `pip install -r requirements_dev.txt`.
 4. Run `make htmlwatch`.
 5. Edit your rst-files.
 6. Commit changes
