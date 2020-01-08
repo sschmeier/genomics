@@ -59,8 +59,8 @@ view:
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILDDIR)/html/*
-	rm -rf $(BUILDDIR)/latex/*
+	rm -rf $(BUILDDIR)/*
+
 
 .PHONY: html
 html:

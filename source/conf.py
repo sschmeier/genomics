@@ -34,7 +34,6 @@ conf_abs_path = os.path.abspath(__file__)
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-  'sphinx_sitemap',
   'sphinx_gitstamp',
   'notfound.extension',
   "sphinx.ext.todo",
@@ -138,7 +137,7 @@ html_static_path = ['_static']
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
 # directly to the root of the documentation.
-html_extra_path = ['robots.txt', 'sitemapindex.xml']
+html_extra_path = ['robots.txt']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
