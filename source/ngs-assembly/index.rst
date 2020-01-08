@@ -6,8 +6,7 @@ Genome assembly
 Preface
 -------
 
-In this section we will use our skill on the command-line interface to create a
-genome assembly from sequencing data.
+In this section we will use our skill on the command-line interface to create a genome assembly from sequencing data.
 
 .. There is an accompanying lecture for this tutorial (`Genome Assembly: An Introduction <https://dx.doi.org/10.6084/m9.figshare.2972323.v1>`__).
 
@@ -43,14 +42,16 @@ Lets see how our directory structure looks so far:
 
 .. code:: bash
 
-          cd ~/analysis
-          ls -1F
+    $ cd ~/analysis
+    $ ls -1F
 
 .. code:: bash
 
-          data/
-          trimmed/
-          trimmed-fastqc/
+    data/
+    multiqc_data/
+    multiqc_report.html
+    trimmed/
+    trimmed-fastqc/
 
 
 Subsampling reads
@@ -62,8 +63,8 @@ To do this we will install another program:
 
 .. code::
 
-    conda activate ngs
-    conda install seqtk
+    $ conda activate ngs
+    $ conda install seqtk
 
 
 Now that ``seqtk`` has been installed, we are going to sample 10% of the original reads:
@@ -110,8 +111,8 @@ It is also simple to install and use.
 
 .. code:: bash
 
-          conda activate ngs
-          conda install spades
+    $ conda activate ngs
+    $ conda install spades
 
 
 SPAdes usage
@@ -121,13 +122,13 @@ SPAdes usage
 .. code:: bash
 
     # change to your analysis root folder
-    cd ~/analysis
+    $ cd ~/analysis
 
     # first create a output directory for the assemblies
-    mkdir assembly
+    $ mkdir assembly
 
     # to get a help for spades and an overview of the parameter type:
-    spades.py -h
+    $ spades.py -h
 
 
 The two files we need to submit to |spades| are two paired-end read files.
@@ -135,14 +136,13 @@ The two files we need to submit to |spades| are two paired-end read files.
 
 .. code:: bash
 
-    spades.py -o assembly/spades-default/ -1 trimmed/ancestor-R1.trimmed.fastq.gz -2 trimmed/ancestor-R2.trimmed.fastq.gz
-
+    $ spades.py -o assembly/spades-150/ --careful -1 trimmed/anc_R1.fastq.gz -2 trimmed/anc_R2.fastq.gz 
 
 .. todo::
 
    #. Run |spades| with default parameters on the ancestor
    #. Read in the |spades| manual about about assembling with 2x150bp reads
-   #. Run |spades| a second time but use the options suggested at the |spades| manual `section 3.4 <http://spades.bioinf.spbau.ru/release3.9.1/manual.html#sec3.4>`__ for assembling 2x150bp paired-end reads (are fungi multicellular?). Use a different output directory ``assembly/spades-150`` for this run.
+   #. Run |spades| a second time but use the options suggested at the |spades| manual `section 3.4 <hhttp://spades.bioinf.spbau.ru/release3.11.1/manual.html#sec3.4>`__ for assembling 2x150bp paired-end reads. Use a different output directory ``assembly/spades-150`` for this run.
 
 .. hint::
 
@@ -170,7 +170,7 @@ The program can be used on their `website <http://quast.bioinf.spbau.ru/>`__.
 
 .. code:: bash
 
-          conda install quast
+    $ conda install quast
 
 Run |quast| with both assembly scaffolds.fasta files to compare the results.
 
@@ -183,7 +183,7 @@ Run |quast| with both assembly scaffolds.fasta files to compare the results.
 
 .. code:: bash
 
-          quast -o assembly/quast assembly/spades-default/scaffolds.fasta assembly/spades-150/scaffolds.fasta
+    $ quast -o assembly/quast assembly/spades-default/scaffolds.fasta assembly/spades-150/scaffolds.fasta
 
 
 .. todo::
@@ -203,23 +203,6 @@ Compare the untrimmed data
 .. hint::
 
    Should you not get it right, try the commands in :ref:`code-assembly2`.
-
-
-Assemblathon
-------------
-
-.. todo::
-
-   Now that you know the basics for assembling a genome and judging their quality, play with the |spades| parameters and the **trimmed data** to create the best assembly possible.
-   We will compare the assemblies to find out who created the best one.
-
-
-.. todo::
-
-   #. Once you have your final assembly, rename your assembly directory int ``spades_final``, e.g. ``mv assembly/spades-default assembly/spades_final``.
-   #. Write down in your notes the command used to create your final assembly.
-   #. Write down in your notes the assembly statistics derived through |quast|
-
 
 
 Further reading

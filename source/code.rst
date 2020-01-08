@@ -67,8 +67,7 @@ Code: SPAdes assembly (trimmed data)
 
 .. code:: bash
 
-   spades.py -o assembly/spades-150/ -k 21,33,55,77 --careful -1 trimmed/ancestor-R1.trimmed.fastq.gz -2 trimmed/ancestor-R2.trimmed.fastq.gz
-
+    spades.py -o assembly/spades-150/ --careful -1 trimmed/anc_R1.fastq.gz -2 trimmed/anc_R2.fastq.gz 
 
 .. _code-assembly2:
 
@@ -77,7 +76,7 @@ Code: SPAdes assembly (original data)
 
 .. code:: bash
 
-   spades.py -o assembly/spades-original/ -k 21,33,55,77 --careful -1 data/ancestor-R1.fastq.gz -2 data/ancestor-R2.fastq.gz
+   spades.py -o assembly/spades-original/ --careful -1 data/anc_R.fastq.gz -2 data/anc_R2.fastq.gz
 
 
 
