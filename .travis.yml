@@ -7,6 +7,7 @@ cache: pip
 
 install: pip install -r requirements.txt
 script: sphinx-build -nWT -b dummy source build
-#after_failure:
-#  - chmod +x ./restore.sh
-#  - ./restore.sh
+
+after_failure:
+  - chmod +x ./restore.sh
+  - ./restore.sh

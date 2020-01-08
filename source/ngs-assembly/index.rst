@@ -155,13 +155,13 @@ Assembly quality assessment
 Assembly statistics
 ~~~~~~~~~~~~~~~~~~~
 
-|quast| (QUality ASsesment Tool) [GUREVICH2013]_, evaluates genome assemblies by computing various metrics, including:
+|quast| (QUality ASsessment Tool) [GUREVICH2013]_, evaluates genome assemblies by computing various metrics, including:
 
 -  N50: length for which the collection of all contigs of that length or
    longer covers at least 50% of assembly length
 -  NG50: where length of the reference genome is being covered
 -  NA50 and NGA50: where aligned blocks instead of contigs are taken
--  missassemblies: misassembled and unaligned contigs or contigs bases
+-  miss-assemblies: miss-assembled and unaligned contigs or contigs bases
 -  genes and operons covered
 
 It is easy with |quast| to compare these measures among several assemblies.
