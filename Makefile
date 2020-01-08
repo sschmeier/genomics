@@ -19,6 +19,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
+	@echo "  htmlwatch  uses watchdog to make html whenever rst is changed."
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
@@ -45,7 +46,8 @@ help:
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
 	@echo "  dummy      to check syntax errors of document sources"
 	@echo "  view       open build html in new window"	
-	@echo "  viewtex    open build latexpdf in new window"	
+	@echo "  viewtex    open build latexpdf in new window"
+	@echo "  deploy     bump and deploy"	
 
 
 .PHONY: viewtex
@@ -242,3 +244,12 @@ dummy:
 	$(SPHINXBUILD) -b dummy $(ALLSPHINXOPTS) $(BUILDDIR)/dummy
 	@echo
 	@echo "Build finished. Dummy builder generates no files."
+
+.PHONY: deploy
+deploy:
+	make latexpdf
+	yes | cp -f build/latex/Genomics.pdf source/_static/
+	git add -u
+	git commit -m "Updated pdf"
+	bump2version patch
+	git push
