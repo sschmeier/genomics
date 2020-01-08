@@ -162,6 +162,12 @@ html_copy_source = False
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'GenomicsDoc'
 
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+#
+html_logo = "images/icon.png"
+
+
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {

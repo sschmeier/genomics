@@ -11,10 +11,9 @@ The production version of the deployed site:
 ## Installing Locally
 
 1. Set up a [python virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtualenv/)
-   named `venv`.
-2. Activate the `venv` environment.
-3. Install the dependencies inside of it by running  `pip install -r
-   requirements.txt`.
+   named `venv` => `pip install virtualenv; virtualenv venv`.
+2. Activate the `venv` environment => `source venv/bin/activate`
+3. Install the dependencies inside of it by running  `pip install -r requirements.txt`.
 4. Run `make htmlwatch`.
 5. Edit your rst-files.
 6. Commit changes
