@@ -46,7 +46,7 @@ Code: FastQC
 
 .. code:: bash
 
-    $ multiqc trimmed-fastqc
+    $ multiqc trimmed-fastqc trimmed
 
 
 *Open |multiqc| report html webpage:*
