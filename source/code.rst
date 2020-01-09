@@ -15,12 +15,12 @@ Code: fastp
 .. code:: bash
 
     # run fastp like this on the ancestor:
-    $ fastp --detect_adapter_for_pe --overrepresentation_analysis --correction  --cut_right --html trimmed/anc.html --json trimmed/anc.json --thread 2 -i data/anc_R1.fastq.gz -I data/anc_R2.fastq.gz -o trimmed/anc_R1.fastq.gz -O trimmed/anc_R2.fastq.gz
+    fastp --detect_adapter_for_pe --overrepresentation_analysis --correction  --cut_right --html trimmed/anc.fastp.html --json trimmed/anc.fastp.json --thread 2 -i data/anc_R1.fastq.gz -I data/anc_R2.fastq.gz -o trimmed/anc_R1.fastq.gz -O trimmed/anc_R2.fastq.gz
 
     # run the evolved samples through fastp
-    $ fastp --detect_adapter_for_pe --overrepresentation_analysis --correction --cut_right --html trimmed/evol1.html --json trimmed/evol1.json --thread 2 -i data/evol1_R1.fastq.gz -I data/evol1_R2.fastq.gz -o trimmed/evol1_R1.fastq.gz -O trimmed/evol1_R2.fastq.gz
+    fastp --detect_adapter_for_pe --overrepresentation_analysis --correction --cut_right --html trimmed/evol1.fastp.html --json trimmed/evol1.fastp.json --thread 2 -i data/evol1_R1.fastq.gz -I data/evol1_R2.fastq.gz -o trimmed/evol1_R1.fastq.gz -O trimmed/evol1_R2.fastq.gz
 
-    $ fastp --detect_adapter_for_pe --overrepresentation_analysis --correction --cut_right --html trimmed/evol2.html --json trimmed/evol2.json --thread 2 -i data/evol2_R1.fastq.gz -I data/evol2_R2.fastq.gz -o trimmed/evol2_R1.fastq.gz -O trimmed/evol2_R2.fastq.gz
+    fastp --detect_adapter_for_pe --overrepresentation_analysis --correction --cut_right --html trimmed/evol2.fastp.html --json trimmed/evol2.fastp.json --thread 2 -i data/evol2_R1.fastq.gz -I data/evol2_R2.fastq.gz -o trimmed/evol2_R1.fastq.gz -O trimmed/evol2_R2.fastq.gz
 
 
 .. _code-qc1:
@@ -32,28 +32,28 @@ Code: FastQC
 
 .. code:: bash
 
-    $ mkdir trimmed-fastqc
+    mkdir trimmed-fastqc
 
 
 *Run FastQC:*
 
 .. code:: bash
 
-    $ fastqc -o trimmed-fastqc trimmed/*.fastq.gz
+    fastqc -o trimmed-fastqc trimmed/*.fastq.gz
   
 
 *Run MultiQC*
 
 .. code:: bash
 
-    $ multiqc trimmed-fastqc trimmed
+    multiqc trimmed-fastqc trimmed
 
 
 *Open |multiqc| report html webpage:*
 
 .. code:: bash
 
-   $ firefox multiqc_report.html
+   firefox multiqc_report.html
 
 
 
