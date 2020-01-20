@@ -75,9 +75,16 @@ Code: SPAdes assembly (original data)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: bash
+    
+    spades.py -o assembly/spades-original/ --careful -1 data/anc_R1.fastq.gz -2 data/anc_R2.fastq.gz
 
-   spades.py -o assembly/spades-original/ --careful -1 data/anc_R.fastq.gz -2 data/anc_R2.fastq.gz
 
+Code: Quast
+~~~~~~~~~~~
+
+.. code:: bash
+
+    quast -o assembl/quast assembly/spades-150/scaffolds.fasta assembly/spades-original/scaffolds.fasta
 
 
 Mapping
