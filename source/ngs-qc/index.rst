@@ -170,12 +170,11 @@ Quality trimming of our sequencing reads will remove bad quality called bases fr
 
 .. code-block:: bash
 
+    # create env and install tools
+    $ conda create --yes -n qc fastp fastqc multiqc
+
     # activate env
-    $ conda activate ngs
-
-    # install
-    $ conda install fastp
-
+    $ conda activate qc
    
 Here, as an example we are trimming the sequence reads of the ancestor:
 
@@ -187,7 +186,7 @@ Here, as an example we are trimming the sequence reads of the ancestor:
     $ fastp --detect_adapter_for_pe       
             --overrepresentation_analysis 
             --correction --cut_right --thread 2 
-            --html trimmed/anc.html --json trimmed/anc.json 
+            --html trimmed/anc.fastp.html --json trimmed/anc.fastp.json 
             -i data/anc_R1.fastq.gz -I data/anc_R2.fastq.gz 
             -o trimmed/anc_R1.fastq.gz -O trimmed/anc_R2.fastq.gz
 
@@ -221,10 +220,6 @@ Installing FastQC
 
 .. code-block:: bash
 
-    $ conda activate ngs   
-    $ conda install fastqc
-
-    # should now run the program
     $ fastqc --help
     
 
@@ -294,23 +289,15 @@ The basic command looks like:
 MultiQC
 ^^^^^^^
 
-|multiqc| is an excellent tool to put |fastqc| results of different samples into context.
-It compiles all |fastqc| results into one nice web-page.
-Install with:
-
-
-.. code-block:: bash
-
-    $ conda install multiqc
-
+|multiqc| is an excellent tool to put |fastqc| (and other tool) results of different samples into context.
+It compiles all |fastqc| results and |fastp| stats into one nice web-page.
 
 The use of |multiqc| is simple.
-Just provide the command with a directory where multiple |fastqc| results are stored and it will compile a nice report, e.g.:
+Just provide the command with a directories where multiple results are stored and it will compile a nice report, e.g.:
 
 .. code-block:: bash
 
-    $ multiqc DIRECTORY
-
+    $ multiqc DIRECTORY DIRECTORY ...
 
 
 Run FastQC and MultiQC on the trimmed data
@@ -321,7 +308,7 @@ Run FastQC and MultiQC on the trimmed data
    #. Create a directory for the results --> ``trimmed-fastqc``
    #. Run FastQC on all **trimmed** files.
    #. Visit the |fastqc| website and read about sequencing QC reports for good and bad |illumina| sequencing runs.
-   #. Run |multiqc| on the ``trimmed-fastqc`` directory
+   #. Run |multiqc| on the ``trimmed-fastqc`` and ``trimmed`` directories
    #. Compare your results to these examples (:numref:`fastqc-bad1` to :numref:`fastqc-bad3`) of a particularly bad run (taken from the |fastqc| website) and write down your observations with regards to your data.
    #. What elements in these example figures (:numref:`fastqc-bad1` to :numref:`fastqc-bad3`) indicate that the example is from a bad run?
 

@@ -69,12 +69,20 @@ Lets see how our directory structure looks so far:
 Mapping sequence reads to a reference genome
 --------------------------------------------
 
-We want to map the sequencing reads to the ancestral reference genome we created in the section :ref:`ngs-assembly`.
+We want to map the sequencing reads to the ancestral reference genome.
 We are going to use the quality trimmed forward and backward DNA sequences of the evolved line and use a program called |bwa| to map the reads.
 
 .. todo::
 
    #. Discuss briefly why we are using the ancestral genome as a reference genome as opposed to a genome for the evolved line.
+
+
+Downloading the reference genome assembly
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. todo::
+
+   In the assembly section at ":ref:`ngs-assembly`", we created a genome assembly. However, we actually used subsampled data as otherwise the assemblies would have taken a long time to finish. To continue, please download the assembly created on the complete dataset (:ref:`downloads`). Unarchive and uncompress the files with ``tar -xvzf assembly.tar.gz``.
 
 
 Installing the software
@@ -117,6 +125,9 @@ The general command structure of the |bwa| tools we are going to use are shown b
 
    # paired-end mapping, general command structure, adjust to your case
    bwa mem path/to/reference-genome.fa path/to/read1.fq.gz path/to/read2.fq.gz > path/to/aln-pe.sam
+
+
+
 
 
 Creating a reference index for mapping

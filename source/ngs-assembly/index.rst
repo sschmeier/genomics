@@ -54,38 +54,37 @@ Lets see how our directory structure looks so far:
     trimmed-fastqc/
 
 
-Subsampling reads
-~~~~~~~~~~~~~~~~~
+.. Subsampling reads
+.. ~~~~~~~~~~~~~~~~~
 
-Due to the size of the data sets you may find that the assembly takes a lot of time to complete, especially on older hardware.
-To mitigate this problem we can randomly select a subset of sequences we are going to use at this stage of the tutorial.
-To do this we will install another program:
+.. Due to the size of the data sets you may find that the assembly takes a lot of time to complete, especially on older hardware.
+.. To mitigate this problem we can randomly select a subset of sequences we are going to use at this stage of the tutorial.
+.. To do this we will install another program:
 
-.. code::
+.. .. code::
 
-    $ conda activate ngs
-    $ conda install seqtk
-
-
-Now that ``seqtk`` has been installed, we are going to sample 10% of the original reads:
-
-.. code::
-
-    # change directory
-    cd ~/analysis
-    # create directory
-    mkdir sampled
-
-    # sub sample reads
-    seqtk sample -s11 trimmed/ancestor-R1.trimmed.fastq.gz 0.1 | gzip > sampled/ancestor-R1.trimmed.fastq.gz
-    seqtk sample -s11 trimmed/ancestor-R2.trimmed.fastq.gz 0.1 | gzip > sampled/ancestor-R2.trimmed.fastq.gz
+..     $ conda install seqtk
 
 
-In the commands below you need to change the input directory from ``trimmed/`` to ``sampled/``.
+.. Now that ``seqtk`` has been installed, we are going to sample 10% of the original reads:
 
-.. note:: The ``-s`` options needs to be the same value for file 1 and file 2 to samples the reads that belong to each other. It specified the seed value for the random number generator.
+.. .. code::
 
-.. note:: It should be noted that by reducing the amount of reads that go into the assembly, we are loosing information that could otherwise be used to make the assembly. Thus, the assembly will be likely "much" worse than when using the complete dataset.
+..     # change directory
+..     cd ~/analysis
+..     # create directory
+..     mkdir sampled
+
+..     # sub sample reads
+..     seqtk sample -s11 trimmed/ancestor-R1.trimmed.fastq.gz 0.1 | gzip > sampled/ancestor-R1.trimmed.fastq.gz
+..     seqtk sample -s11 trimmed/ancestor-R2.trimmed.fastq.gz 0.1 | gzip > sampled/ancestor-R2.trimmed.fastq.gz
+
+
+.. In the commands below you need to change the input directory from ``trimmed/`` to ``sampled/``.
+
+.. .. note:: The ``-s`` options needs to be the same value for file 1 and file 2 to samples the reads that belong to each other. It specified the seed value for the random number generator.
+
+.. .. note:: It should be noted that by reducing the amount of reads that go into the assembly, we are loosing information that could otherwise be used to make the assembly. Thus, the assembly will be likely "much" worse than when using the complete dataset.
 
 
 Creating a genome assembly
@@ -111,8 +110,8 @@ It is also simple to install and use.
 
 .. code:: bash
 
-    $ conda activate ngs
-    $ conda install spades
+    $ conda create -n assembly spades quast
+    $ conda activate assembly
 
 
 SPAdes usage
@@ -131,18 +130,18 @@ SPAdes usage
     $ spades.py -h
 
 
-The two files we need to submit to |spades| are two paired-end read files.
+Generally, paired-end data is submitted in the following way to |spades|:
 
 
 .. code:: bash
 
-    $ spades.py -o assembly/spades-150/ --careful -1 trimmed/anc_R1.fastq.gz -2 trimmed/anc_R2.fastq.gz 
+    $ spades.py -o result-directory -1 read1.fastq.gz -2 read2.fastq.gz 
 
 .. todo::
 
-   #. Run |spades| with default parameters on the ancestor
+   #. Run |spades| with default parameters on the ancestor's trimmed reads
    #. Read in the |spades| manual about about assembling with 2x150bp reads
-   #. Run |spades| a second time but use the options suggested at the |spades| manual `section 3.4 <hhttp://spades.bioinf.spbau.ru/release3.11.1/manual.html#sec3.4>`__ for assembling 2x150bp paired-end reads. Use a different output directory ``assembly/spades-150`` for this run.
+   #. Run |spades| a second time but use the options suggested at the |spades| manual `section 3.4 <http://cab.spbu.ru/files/release3.14.0/manual.html#sec3.4>`__ for assembling 2x150bp paired-end reads. Use a different output directory ``assembly/spades-150`` for this run.
 
 .. hint::
 
