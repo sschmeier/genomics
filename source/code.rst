@@ -107,7 +107,7 @@ Code: Bowtie2 indexing
 Code: Bowtie2 mapping
 ~~~~~~~~~~~~~~~~~~~~~~
 
-*Map to the genome. Use a max fragemnt length of 1000 bp:*
+*Map to the genome. Use a max fragement length of 1000 bp:*
 
 .. code:: bash
 
