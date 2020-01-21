@@ -1,7 +1,7 @@
 .. _taxonomic-investigation:
 
-Taxonomic investigation
-=======================
+Taxonomic profiling
+===================
 
 
 Preface
@@ -37,18 +37,19 @@ Before we start
 
 Lets see how our directory structure looks so far:
 
-.. code:: bash
+.. code:: sh
 
-          cd ~/analysis
-          ls -1F
+    $ cd ~/analysis
+    $ ls -1F
 
-.. code:: bash
+.. code:: sh
 
-          assembly/
-          data/
-          mappings/
-          trimmed/
-          trimmed-fastqc/
+    assembly/
+    data/
+    mappings/
+    multiqc_data
+    trimmed/
+    trimmed-fastqc/
 
 
 Kraken2
@@ -67,34 +68,34 @@ Installation
 Use conda in the same fashion as before to install |kraken|.
 However, we are going to install kraken into its own environment:
 
-.. code-block:: bash
+.. code-block:: sh
 
-   conda create --yes -n kraken kraken2 bracken
-   conda activate kraken
+    $ conda create --yes -n kraken kraken2 bracken
+    $ conda activate kraken
 
 Now we create a directory where we are going to do the analysis and we will change into that directory too.
 
-.. code-block:: bash
+.. code-block:: sh
 
-   # make sure you are in your analysis root folder
-   cd ~/analysis
+    # make sure you are in your analysis root folder
+    $ cd ~/analysis
 
-   # create dir
-   mkdir kraken
-   cd kraken
+    # create dir
+    $ mkdir kraken
+    $ cd kraken
 
 Now we need to create or download a |kraken| database that can be used to assign the taxonomic labels to sequences.
 We opt for downloading the pre-build "minikraken2" database from the |kraken| website:
 
-.. code-block:: bash
+.. code-block:: sh
 
-   curl -O ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken2_v2_8GB_201904_UPDATE.tgz
+    $ curl -O ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken2_v2_8GB_201904_UPDATE.tgz
 
-   # alternatively we can use wget
-   wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken2_v2_8GB_201904_UPDATE.tgz
+    # alternatively we can use wget
+    $ wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken2_v2_8GB_201904_UPDATE.tgz
 
-   # once the download is finished, we need to extract the archive content:
-   tar -xvzf minikraken2_v2_8GB_201904_UPDATE.tgz
+    # once the download is finished, we need to extract the archive content:
+    $ tar -xvzf minikraken2_v2_8GB_201904_UPDATE.tgz
 
 
 .. ATTENTION::
@@ -113,9 +114,9 @@ Now that we have installed |kraken| and downloaded and extracted the minikraken2
 We call the |kraken| tool and specify the database and fasta-file with the sequences it should use. The general command structure looks like this:
 
 
-.. code:: bash
+.. code:: sh
 
-   kraken2 --use-names --threads 4 --db PATH_TO_DB_DIR --report example.report.txt example.fa > example.kraken
+    $ kraken2 --use-names --threads 4 --db PATH_TO_DB_DIR --report example.report.txt example.fa > example.kraken
 
 
 However, we may have fastq-files, so we need to use ``--fastq-input`` which tells |kraken| that it is dealing with fastq-formated files.
@@ -123,14 +124,14 @@ In addition, we are dealing with paired-end data, which we can tell |kraken| wit
 Here, we are investigating one of the unmapped paired-end read files of the evolved line.
 
 
-.. code:: bash
+.. code:: sh
 
-   kraken2 --use-names --threads 4 --db minikraken2_v2_8GB_201904_UPDATE --fastq-input --report evolved-6 --paired ../mappings/evolved-6.sorted.unmapped.R1.fastq ../mappings/evolved-6.sorted.unmapped.R2.fastq > evolved-6.kraken
+    $ kraken2 --use-names --threads 4 --db minikraken2_v2_8GB_201904_UPDATE --fastq-input --report evol1 --paired ../mappings/evol1.sorted.unmapped.R1.fastq.gz ../mappings/evol1.sorted.unmapped.R2.fastq.gz > evol1.kraken
 
 
 
 This classification may take a while, depending on how many sequences we are going to classify.
-The resulting content of the file "evolved-6.kraken" looks similar to the following example:
+The resulting content of the file ``evol1.kraken`` looks similar to the following example:
 
 
 .. include:: example-kraken.txt
@@ -228,9 +229,9 @@ Now, we can use |bracken| on the |kraken| results to improve them.
 The general structure of the |bracken| command look like this:
 
 
-.. code:: bash
+.. code:: sh
 
-    bracken -d PATH_TO_DB_DIR -i kraken2.report -o bracken.species.txt -l S
+    $ bracken -d PATH_TO_DB_DIR -i kraken2.report -o bracken.species.txt -l S
 
 
 - ``-l S``: denotes the level we want to look at. ``S`` stands for species but other levels are available.
@@ -240,9 +241,9 @@ The general structure of the |bracken| command look like this:
 Let us apply |bracken| to the example above:
 
 
-.. code:: bash
+.. code:: sh
 
-    bracken -d minikraken2_v2_8GB_201904_UPDATE -i evolved-6.kraken -l S -o evolved-6.bracken
+    $ bracken -d minikraken2_v2_8GB_201904_UPDATE -i evol1.kraken -l S -o evol1.bracken
 
 
 
@@ -274,35 +275,35 @@ Installation
 
 Use conda in the same fashion as before to install |centrifuge|:
 
-.. code-block:: bash
+.. code-block:: sh
 
-   conda create --yes -n centrifuge centrifuge
-   conda activate centrifuge
+    $ conda create --yes -n centrifuge centrifuge
+    $ conda activate centrifuge
 
 Now we create a directory where we are going to do the analysis and we will change into that directory too.
 
-.. code-block:: bash
+.. code-block:: sh
 
-   # make sure you are in your analysis root folder
-   cd ~/analysis
+    # make sure you are in your analysis root folder
+    $ cd ~/analysis
 
-   # create dir
-   mkdir centrifuge
-   cd centrifuge
+    # create dir
+    $ mkdir centrifuge
+    $ cd centrifuge
 
 Now we need to create or download a |centrifuge| database that can be used to assign the taxonomic labels to sequences.
 We opt for downloading the pre-build database from the |centrifuge| website:
 
-.. code-block:: bash
+.. code-block:: sh
 
-   curl -O ftp://ftp.ccb.jhu.edu/pub/infphilo/centrifuge/data/p_compressed+h+v.tar.gz
+    $ curl -O ftp://ftp.ccb.jhu.edu/pub/infphilo/centrifuge/data/p_compressed+h+v.tar.gz
 
-   # alternatively we can use wget
-   wget ftp://ftp.ccb.jhu.edu/pub/infphilo/centrifuge/data/p_compressed+h+v.tar.gz
+    $ # alternatively we can use wget
+    $ wget ftp://ftp.ccb.jhu.edu/pub/infphilo/centrifuge/data/p_compressed+h+v.tar.gz
 
-   # once the download is finished, we need to extract the archive content
-   # It will extract a few files from the archive and may take a moment to finish.
-   tar -xvzf p_compressed+h+v.tar.gz
+    # once the download is finished, we need to extract the archive content
+    # It will extract a few files from the archive and may take a moment to finish.
+    $ tar -xvzf p_compressed+h+v.tar.gz
 
 
 .. ATTENTION::
@@ -321,22 +322,22 @@ Now that we have installed |centrifuge| and downloaded and extracted the pre-bui
 We call the |centrifuge| tool and specify the database and fasta-file with the sequences it should use. The general command structure looks like this:
 
 
-.. code:: bash
+.. code:: sh
 
-   centrifuge -x p_compressed+h+v -U example.fa --report-file report.txt -S results.txt
+    $ centrifuge -x p_compressed+h+v -U example.fa --report-file report.txt -S results.txt
 
 
 However, if we do not have fastq-files we may have to use the  ``-f`` option, which tells |centrifuge| that it is dealing with a fasta-formated file.
 Here, we are investigating one of the unmapped paired-end read files of the evolved line.
 
 
-.. code:: bash
+.. code:: sh
 
-   centrifuge -x p_compressed+h+v -U ../mappings/evolved-6.sorted.unmapped.R1.fastq --report-file evolved-6-R1-report.txt -S evolved-6-R1-results.txt
+    $ centrifuge -x p_compressed+h+v -U ../mappings/evol1.sorted.unmapped.R1.fastq.gz --report-file evol1-R1-report.txt -S evol1-R1-results.txt
 
 
 This classification may take a moment, depending on how many sequences we are going to classify.
-The resulting content of the file ``evolved-6-R1-results.txt`` looks similar to the following example:
+The resulting content of the file ``evol1-R1-results.txt`` looks similar to the following example:
 
 
 .. include:: example-centrifuge-results.txt
@@ -391,7 +392,7 @@ If we would like to generate a report as generated with the former tool |kraken|
 
 .. code::
 
-   centrifuge-kreport -x p_compressed+h+v evolved-6-R1-results.txt > evolved-6-R1-kreport.txt
+    $ centrifuge-kreport -x p_compressed+h+v evolved-6-R1-results.txt > evolved-6-R1-kreport.txt
 
 
 .. include:: example-centrifuge-kreport.txt
@@ -427,24 +428,24 @@ Installation
 
 Install |krona| with:
 
-.. code-block:: bash
+.. code-block:: sh
 
-   source activate ngs
-   conda install krona
+    $ conda create --yes -n krona krona 
+    $ conda activate krona
 
 First some house-keeping to make the |krona| installation work.
 Do not worry to much about what is happening here.
 
-.. code-block:: bash
+.. code-block:: sh
 
-   # we delete a symbolic link that is not correct
-   rm -rf ~/miniconda3/envs/ngs/opt/krona/taxonomy
+    # we delete a symbolic link that is not correct
+    $ rm -rf ~/miniconda3/envs/ngs/opt/krona/taxonomy
 
-   # we create a directory in our home where the krona database will live
-   mkdir -p ~/krona/taxonomy
+    # we create a directory in our home where the krona database will live
+    $ mkdir -p ~/krona/taxonomy
 
-   # now we make a symbolic link to that directory
-   ln -s ~/krona/taxonomy ~/miniconda3/envs/ngs/opt/krona/taxonomy
+    # now we make a symbolic link to that directory
+    $ ln -s ~/krona/taxonomy ~/miniconda3/envs/ngs/opt/krona/taxonomy
 
 
 Build the taxonomy
@@ -456,24 +457,24 @@ However, if this fails we will skip this step and just download a pre-build one.
 Lets first try to build one.
 
 
-.. code-block:: bash
+.. code-block:: sh
 
-   ktUpdateTaxonomy.sh ~/krona/taxonomy
+   $ ktUpdateTaxonomy.sh ~/krona/taxonomy
 
 
 Now, if this fails, we download a pre-build taxonomy database for krona:
 
 
-.. code-block:: bash
+.. code-block:: sh
 
    # Download pre-build database
-   curl -O http://compbio.massey.ac.nz/data/taxonomy.tab.gz
+   $ curl -O http://compbio.massey.ac.nz/data/taxonomy.tab.gz
 
    # we unzip the file
-   gzip -d taxonomy.tab.gz
+   $ gzip -d taxonomy.tab.gz
 
    # we move the unzipped file to our taxonomy directory we specified in the step before.
-   mv taxonomy.tab ~/krona/taxonomy
+   $ mv taxonomy.tab ~/krona/taxonomy
 
 
 .. ATTENTION::
@@ -488,19 +489,19 @@ We first need build a two column file (``read_id<tab>tax_id``) as input to the `
 We will do this by cutting the columns out of either the |kraken| or |centrifuge| results:
 
 
-.. code:: bash
+.. code:: sh
 
-   # Kraken2
-   cd kraken
-   cat evolved-6.kraken | cut -f 2,3 > evolved-6.kraken.krona
-   ktImportTaxonomy evolved-6.kraken.krona
-   firefox taxonomy.krona.html
+    # Kraken2
+    $ cd kraken
+    $ cat evol1.kraken | cut -f 2,3 > evol1.kraken.krona
+    $ ktImportTaxonomy evol1.kraken.krona
+    $ firefox taxonomy.krona.html
 
-   # Centrifuge
-   cd centrifuge
-   cat evolved-6-R1-results.txt | cut -f 1,3 > evolved-6-R1-results.krona
-   ktImportTaxonomy evolved-6-R1-results.krona
-   firefox taxonomy.krona.html
+    # Centrifuge
+    $ cd centrifuge
+    $ cat evol1-R1-results.txt | cut -f 1,3 > evol1-R1-results.krona
+    $ ktImportTaxonomy evol1-R1-results.krona
+    $ firefox taxonomy.krona.html
 
 
 What happens here is that we extract the second and third column from the |kraken| results.
