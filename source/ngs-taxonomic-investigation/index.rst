@@ -120,13 +120,14 @@ We call the |kraken| tool and specify the database and fasta-file with the seque
 
 
 However, we may have fastq-files, so we need to use ``--fastq-input`` which tells |kraken| that it is dealing with fastq-formated files.
+The ``--gzip-compressed`` flag specifies tat te input-files are compressed.
 In addition, we are dealing with paired-end data, which we can tell |kraken| with the switch ``--paired``.
 Here, we are investigating one of the unmapped paired-end read files of the evolved line.
 
 
 .. code:: sh
 
-    $ kraken2 --use-names --threads 4 --db minikraken2_v2_8GB_201904_UPDATE --fastq-input --report evol1 --paired ../mappings/evol1.sorted.unmapped.R1.fastq.gz ../mappings/evol1.sorted.unmapped.R2.fastq.gz > evol1.kraken
+    $ kraken2 --use-names --threads 4 --db minikraken2_v2_8GB_201904_UPDATE --fastq-input --report evol1 --gzip-compressed --paired ../mappings/evol1.sorted.unmapped.R1.fastq.gz ../mappings/evol1.sorted.unmapped.R2.fastq.gz > evol1.kraken
 
 
 
@@ -319,25 +320,24 @@ Usage
 ^^^^^
 
 Now that we have installed |centrifuge| and downloaded and extracted the pre-build database, we can attempt to investigate the sequences we got back from the sequencing provider for other species as the one it should contain.
-We call the |centrifuge| tool and specify the database and fasta-file with the sequences it should use. The general command structure looks like this:
+We call the |centrifuge| tool and specify the database and fastq-files with the sequences it should use. The general command structure looks like this:
 
 
 .. code:: sh
 
-    $ centrifuge -x p_compressed+h+v -U example.fa --report-file report.txt -S results.txt
+    $ centrifuge -x p_compressed+h+v -1 example.1.fq -2 example.2.fq -U single.fq --report-file report.txt -S results.txt
 
 
-However, if we do not have fastq-files we may have to use the  ``-f`` option, which tells |centrifuge| that it is dealing with a fasta-formated file.
-Here, we are investigating one of the unmapped paired-end read files of the evolved line.
+Here, we are investigating paired-end read files of the evolved line.
 
 
 .. code:: sh
 
-    $ centrifuge -x p_compressed+h+v -U ../mappings/evol1.sorted.unmapped.R1.fastq.gz --report-file evol1-R1-report.txt -S evol1-R1-results.txt
+    $ centrifuge -x p_compressed+h+v -1 ../mappings/evol1.sorted.unmapped.R1.fastq  -2 ../mappings/evol1.sorted.unmapped.R2.fastq --report-file evol1-report.txt -S evol1-results.txt
 
 
 This classification may take a moment, depending on how many sequences we are going to classify.
-The resulting content of the file ``evol1-R1-results.txt`` looks similar to the following example:
+The resulting content of the file ``evol1-results.txt`` looks similar to the following example:
 
 
 .. include:: example-centrifuge-results.txt
@@ -499,8 +499,8 @@ We will do this by cutting the columns out of either the |kraken| or |centrifuge
 
     # Centrifuge
     $ cd centrifuge
-    $ cat evol1-R1-results.txt | cut -f 1,3 > evol1-R1-results.krona
-    $ ktImportTaxonomy evol1-R1-results.krona
+    $ cat evol1-results.txt | cut -f 1,3 > evol1-results.krona
+    $ ktImportTaxonomy evol1-results.krona
     $ firefox taxonomy.krona.html
 
 
