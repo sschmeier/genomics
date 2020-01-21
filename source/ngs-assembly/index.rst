@@ -174,12 +174,6 @@ The program can be used on their `website <http://quast.bioinf.spbau.ru/>`__.
 Run |quast| with both assembly scaffolds.fasta files to compare the results.
 
 
-.. note::
-
-   Should you be unable to run |spades| on the data, you can manually download the assembly from :ref:`downloads`. Unarchive and uncompress the files with ``tar -xvzf assembly.tar.gz``.
-
-
-
 .. code:: bash
 
     $ quast -o assembly/quast assembly/spades-default/scaffolds.fasta assembly/spades-150/scaffolds.fasta

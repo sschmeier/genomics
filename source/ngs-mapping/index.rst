@@ -44,10 +44,10 @@ Lets see how our directory structure looks so far:
 
 .. code:: bash
 
-          cd ~/analysis
+          $ cd ~/analysis
           # create a mapping result directory
-          mkdir mappings
-          ls -1F
+          $ mkdir mappings
+          $ ls -1F
 
 
 .. code:: bash
@@ -55,7 +55,8 @@ Lets see how our directory structure looks so far:
           assembly/
           data/
           mappings/
-          (sampled/)
+          multiqc_data/
+          multiqc_report.html
           trimmed/
           trimmed-fastqc/
 
@@ -82,7 +83,7 @@ Downloading the reference genome assembly
 
 .. todo::
 
-   In the assembly section at ":ref:`ngs-assembly`", we created a genome assembly. However, we actually used subsampled data as otherwise the assemblies would have taken a long time to finish. To continue, please download the assembly created on the complete dataset (:ref:`downloads`). Unarchive and uncompress the files with ``tar -xvzf assembly.tar.gz``.
+   In the assembly section at ":ref:`ngs-assembly`", we created a genome assembly. However, we actually used sub-sampled data as otherwise the assemblies would have taken a long time to finish. To continue, please download the assembly created on the complete dataset (:ref:`downloads`). Unarchive and uncompress the files with ``tar -xvzf assembly.tar.gz``.
 
 
 Installing the software
@@ -94,8 +95,8 @@ It is simple to install and use.
 
 .. code:: bash
 
-          conda activate ngs
-          conda install bedtools samtools bwa
+    $ conda create --yes -n mapping samtools bwa qualimap r-base
+    $ conda activate mapping
 
 
 BWA
@@ -105,28 +106,27 @@ BWA
 Overview
 ~~~~~~~~
 
-|bwa| is a short read aligner, that can take a reference genome and map single- or paired-end data to it [LI2009]_.
+|bwa| is a short read aligner, that can take a reference genome and map single- or paired-end sequence data to it [LI2009]_.
 It requires an indexing step in which one supplies the reference genome and |bwa| will create an index that in the subsequent steps will be used for aligning the reads to the reference genome.
+While this step can take some time, the good thing is the index can be reused over and over.
 The general command structure of the |bwa| tools we are going to use are shown below:
 
 .. code:: bash
 
    # bwa index help
-   bwa index
+   $ bwa index
 
    # indexing
-   bwa index path/to/reference-genome.fa
+   $ bwa index path/to/reference-genome.fa
 
    # bwa mem help
-   bwa mem
+   $ bwa mem
 
    # single-end mapping, general command structure, adjust to your case
-   bwa mem path/to/reference-genome.fa path/to/reads.fq.gz > path/to/aln-se.sam
+   $ bwa mem path/to/reference-genome.fa path/to/reads.fq.gz > path/to/aln-se.sam
 
    # paired-end mapping, general command structure, adjust to your case
-   bwa mem path/to/reference-genome.fa path/to/read1.fq.gz path/to/read2.fq.gz > path/to/aln-pe.sam
-
-
+   $ bwa mem path/to/reference-genome.fa path/to/read1.fq.gz path/to/read2.fq.gz > path/to/aln-pe.sam
 
 
 
@@ -153,11 +153,11 @@ Creating a reference index for mapping
 Mapping reads in a paired-end manner
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Now that we have created our index, it is time to map the filtered and trimmed sequencing reads of our evolved line to the reference genome.
+Now that we have created our index, it is time to map the trimmed sequencing reads of our two evolved line to the reference genome.
 
 .. todo::
 
-   Use the correct ``bwa mem`` command structure from above and map the reads of the evolved line to the reference genome.
+   Use the correct ``bwa mem`` command structure from above and map the reads of the two evolved line to the reference genome.
 
 
 .. hint::
@@ -166,82 +166,83 @@ Now that we have created our index, it is time to map the filtered and trimmed s
 
 
 
-Bowtie2 (alternative to BWA)
-----------------------------
+.. Bowtie2 (alternative to BWA)
+.. ----------------------------
 
-.. Attention::
+.. .. Attention::
 
-   If the mapping did not succeed with |bwa|. We can use the aligner |bowtie| explained in this section. If the mapping with |bwa| did work, you can jump this section. You can jump straight ahead to :numref:`sam-file-format`.
-
-
-Install with:
+..    If the mapping did not succeed with |bwa|. We can use the aligner |bowtie|, explained in this section. If the mapping with |bwa| did work, you can jump straight ahead to :numref:`sam-file-format`.
 
 
-.. code:: bash
-
-    conda install bowtie2
+.. Install with:
 
 
-Overview
-~~~~~~~~
+.. .. code:: bash
 
-|bowtie| is a short read aligner, that can take a reference genome and map single- or paired-end data to it [TRAPNELL2009]_.
-It requires an indexing step in which one supplies the reference genome and |bowtie| will create an index that in the subsequent steps will be used for aligning the reads to the reference genome.
-The general command structure of the |bowtie| tools we are going to use are shown below:
+..     $ conda activate mapping
+..     $ conda install --yes bowtie2
 
 
-.. code:: bash
+.. Overview
+.. ~~~~~~~~
 
-   # bowtie2 help
-   bowtie2-build
-
-   # indexing
-   bowtie2-build genome.fasta /path/to/index/prefix
-
-   # paired-end mapping
-   bowtie2 -X 1000 -x /path/to/index/prefix -1 read1.fq.gz -2 read2.fq.gz -S aln-pe.sam
+.. |bowtie| is a short read aligner, that can take a reference genome and map single- or paired-end data to it [TRAPNELL2009]_.
+.. It requires an indexing step in which one supplies the reference genome and |bowtie| will create an index that in the subsequent steps will be used for aligning the reads to the reference genome.
+.. The general command structure of the |bowtie| tools we are going to use are shown below:
 
 
-- ``-X``: Adjust the maximum fragment size (length of paired-end alignments + insert size) to 1000bp. This might be useful if you do not know the exact insert size of your data. The |bowtie| default is set to 500 which is `often considered too short <http://lab.loman.net/2013/05/02/use-x-with-bowtie2-to-set-minimum-and-maximum-insert-sizes-for-nextera-libraries/>`__.
+.. .. code:: bash
+
+..    # bowtie2 help
+..    $ bowtie2-build
+
+..    # indexing
+..    $ bowtie2-build genome.fasta /path/to/index/prefix
+
+..    # paired-end mapping
+..    $ bowtie2 -X 1000 -x /path/to/index/prefix -1 read1.fq.gz -2 read2.fq.gz -S aln-pe.sam
 
 
-Creating a reference index for mapping
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. todo::
-
-   Create an |bowtie| index for our reference genome assembly. Attention! Remember which file you need to submit to |bowtie|.
+.. - ``-X``: Adjust the maximum fragment size (length of paired-end alignments + insert size) to 1000bp. This might be useful if you do not know the exact insert size of your data. The |bowtie| default is set to 500 which is `often considered too short <http://lab.loman.net/2013/05/02/use-x-with-bowtie2-to-set-minimum-and-maximum-insert-sizes-for-nextera-libraries/>`__.
 
 
-.. hint::
+.. Creating a reference index for mapping
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   Should you not get it right, try the commands in :ref:`code-bowtie1`.
+.. .. todo::
 
-
-.. note::
-
-   Should you be unable to run |bowtie| indexing on the data, you can download the index from :ref:`downloads`. Unarchive and uncompress the files with ``tar -xvzf bowtie2-index.tar.gz``.
+..    Create an |bowtie| index for our reference genome assembly. Attention! Remember which file you need to submit to |bowtie|.
 
 
+.. .. hint::
 
-Mapping reads in a paired-end manner
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Now that we have created our index, it is time to map the filtered and trimmed sequencing reads of our evolved line to the reference genome.
-
-.. todo::
-
-   Use the correct ``bowtie2`` command structure from above and map the reads of the evolved line to the reference genome.
+..    Should you not get it right, try the commands in :ref:`code-bowtie1`.
 
 
-.. hint::
+.. .. note::
 
-   Should you not get it right, try the commands in :ref:`code-bowtie2`.
+..    Should you be unable to run |bowtie| indexing on the data, you can download the index from :ref:`downloads`. Unarchive and uncompress the files with ``tar -xvzf bowtie2-index.tar.gz``.
 
 
-.. note::
 
-   |bowtie| does give very cryptic error messages without telling much why it did not want to run. The most likely reason is that you specified the paths to the files and result file wrongly. Check this first. Use tab completion a lot!
+.. Mapping reads in a paired-end manner
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. Now that we have created our index, it is time to map the filtered and trimmed sequencing reads of our evolved line to the reference genome.
+
+.. .. todo::
+
+..    Use the correct ``bowtie2`` command structure from above and map the reads of the evolved line to the reference genome.
+
+
+.. .. hint::
+
+..    Should you not get it right, try the commands in :ref:`code-bowtie2`.
+
+
+.. .. note::
+
+..    |bowtie| does give very cryptic error messages without telling much why it did not want to run. The most likely reason is that you specified the paths to the files and result file wrongly. Check this first. Use tab completion a lot!
 
 
 
@@ -250,7 +251,7 @@ Now that we have created our index, it is time to map the filtered and trimmed s
 The sam mapping file-format
 ---------------------------
 
-|bowtie| and |bwa| will produce a mapping file in sam-format. Have a look into the sam-file that was created by either program.
+|bwa| and |bowtie| will produce a mapping file in sam-format. Have a look into the sam-file that was created by either program.
 A quick overview of the sam-format can be found `here <http://bio-bwa.sourceforge.net/bwa.shtml#4>`__ and even more information can be found `here <http://samtools.github.io/hts-specs/SAMv1.pdf>`__.
 Briefly, first there are a lot of header lines. Then, for each read, that mapped to the reference, there is one line.
 
@@ -293,7 +294,7 @@ One line of a mapped read can be seen here:
 
     M02810:197:000000000-AV55U:1:1101:10000:11540   83      NODE_1_length_1419525_cov_15.3898       607378  60      151M    =       607100  -429    TATGGTATCACTTATGGTATCACTTATGGCTATCACTAATGGCTATCACTTATGGTATCACTTATGACTATCAGACGTTATTACTATCAGACGATAACTATCAGACTTTATTACTATCACTTTCATATTACCCACTATCATCCCTTCTTTA FHGHHHHHGGGHHHHHHHHHHHHHHHHHHGHHHHHHHHHHHGHHHHHGHHHHHHHHGDHHHHHHHHGHHHHGHHHGHHHHHHFHHHHGHHHHIHHHHHHHHHHHHHHHHHHHGHHHHHGHGHHHHHHHHEGGGGGGGGGFBCFFFFCCCCC NM:i:0  MD:Z:151        AS:i:151        XS:i:0
 
-It basically defines, the read and the position in the reference genome where the read mapped and a quality of the map.
+It basically defines the read and the position within the reference genome, where the read mapped and a quality of the mapping.
 
 
 Mapping post-processing
@@ -309,7 +310,8 @@ Note, ``samtools fixmate`` expects **name-sorted** input files, which we can ach
 
 .. code:: bash
 
-   samtools sort -n -O sam mappings/evolved-6.sam | samtools fixmate -m -O bam - mappings/evolved-6.fixmate.bam
+    $ samtools sort -n -O sam mappings/evol1.sam | samtools fixmate -m -O bam - mappings/evol1.fixmate.bam
+
 
 - ``-m``: Add ms (mate score) tags. These are used by markdup (below) to select the best reads to keep.
 - ``-O bam``: specifies that we want compressed bam output from fixmate
@@ -327,12 +329,12 @@ We will be using the `SAM flag <http://bio-bwa.sourceforge.net/bwa.shtml#4>`__ i
    A very useful tools to explain flags can be found `here <http://broadinstitute.github.io/picard/explain-flags.html>`__.
 
 
-Once we have bam-file, we can also delete the original sam-file as it requires too much space.
+Once we have ``bam``-file, we can also delete the original ``sam``-file as it requires too much space and we can always recreate it from the ``bam``-file.
 
 
 .. code:: bash
 
-   rm mappings/evolved-6.sam
+    $ rm mappings/evol1.sam
 
 
 Sorting
@@ -344,7 +346,10 @@ We are going to use |samtools| again to sort the bam-file into **coordinate orde
 .. code:: bash
 
     # convert to bam file and sort
-    samtools sort -O bam -o mappings/evolved-6.sorted.bam mappings/evolved-6.fixmate.bam
+    $ samtools sort -O bam -o mappings/evol1.sorted.bam mappings/evol1.fixmate.bam
+
+    # Once it successfully finished, delete the fixmate file to save space
+    $ rm mappings/evol1.fixmate.bam
 
 
 - ``-o``: specifies the name of the output file.
@@ -362,7 +367,11 @@ However, for other research questions that use mapping, you might not want to re
 
 .. code:: bash
 
-    samtools markdup -r -S mappings/evolved-6.sorted.bam mappings/evolved-6.sorted.dedup.bam
+    $ samtools markdup -r -S mappings/evol1.sorted.bam mappings/evol1.sorted.dedup.bam
+    
+    # if it worked, delete the original file
+    $ rm mappings/evol1.sorted.bam
+
 
 .. todo::
 
@@ -385,7 +394,7 @@ Lets get an mapping overview:
 
 .. code:: bash
 
-    samtools flagstat mappings/evolved-6.sorted.dedup.bam
+    $ samtools flagstat mappings/evol1.sorted.dedup.bam
 
 
 .. todo::
@@ -401,7 +410,7 @@ For the sorted bam-file we can get read depth for at all positions of the refere
 
 .. code:: bash
 
-    samtools depth mappings/evolved-6.sorted.dedup.bam | gzip > mappings/evolved-6.depth.txt.gz
+    $ samtools depth mappings/evol1.sorted.dedup.bam | gzip > mappings/evol1.depth.txt.gz
 
 
 .. todo::
@@ -411,11 +420,12 @@ For the sorted bam-file we can get read depth for at all positions of the refere
 
 .. code:: bash
 
-   zcat mappings/evolved-6.depth.txt.gz | egrep '^NODE_20_' | gzip >  mappings/NODE_20.depth.txt.gz
+   $ zcat mappings/evol1.depth.txt.gz | egrep '^NODE_20_' | gzip >  mappings/NODE_20.depth.txt.gz
 
 
 Now we quickly use some |R| to make a coverage plot for contig NODE20.
 Open a |R| shell by typing ``R`` on the command-line of the shell.
+
 
 .. code:: R
 
@@ -458,20 +468,15 @@ For a more in depth analysis of the mappings, one can use |qualimap| [OKO2015]_.
 
 |qualimap| examines sequencing alignment data in SAM/BAM files according to the features of the mapped reads and provides an overall view of the data that helps to the detect biases in the sequencing and/or mapping of the data and eases decision-making for further analysis.
 
-Installation:
-
-
-.. code::
-
-   conda install qualimap
-
 
 Run |qualimap| with:
 
 
 .. code:: bash
 
-   qualimap bamqc -bam mappings/evolved-6.sorted.dedup.bam
+   $ qualimap bamqc -bam mappings/evol1.sorted.dedup.bam
+   # Once finsished open reult page with
+   $ firefox mappings/evol1.sorted.dedup_stats/qualimapReport.html
 
 
 This will create a report in the mapping folder.
@@ -480,8 +485,7 @@ See this `webpage <http://qualimap.bioinfo.cipf.es/doc_html/analysis.html#output
 
 .. todo::
 
-   Install |qualimap| and investigate the mapping of the evolved sample. Write
-   down your observations.
+   Investigate the mapping of the evolved sample. Write down your observations.
 
 
 
@@ -499,14 +503,19 @@ We can sub-select from the output reads we want to analyse further using |samtoo
 Concordant reads
 ~~~~~~~~~~~~~~~~
 
-We can select read-pair that have been mapped in a correct manner (same chromosome/contig, correct orientation to each other, distance between reads is not stupid).
+We can select read-pair that have been mapped in a correct manner (same chromosome/contig, correct orientation to each other, distance between reads is not stupid). 
+
+
+.. attention::
+
+    We show the command here, but we are not going to use it.
 
 
 .. code:: bash
 
-   samtools view -h -b -f 3 mappings/evolved-6.sorted.dedup.bam > mappings/evolved-6.sorted.dedup.concordant.bam
+   $ samtools view -h -b -f 3 mappings/evol1.sorted.dedup.bam > mappings/evol1.sorted.dedup.concordant.bam
 
-- ``-h``: Include the sam header
+
 - ``-b``: Output will be bam-format
 - ``-f 3``: Only extract correctly paired reads. ``-f`` extracts alignments with the specified `SAM flag <http://bio-bwa.sourceforge.net/bwa.shtml#4>`__ set.
 
@@ -534,7 +543,8 @@ For the sake of going forward, we will sub-select reads with at least medium qua
 
 .. code:: bash
 
-   samtools view -h -b -q 20 mappings/evolved-6.sorted.dedup.bam > mappings/evolved-6.sorted.dedup.q20.bam
+    $ samtools view -h -b -q 20 mappings/evol1.sorted.dedup.bam > mappings/evol1.sorted.dedup.q20.bam
+
 
 - ``-h``: Include the sam header
 - ``-q 20``: Only extract reads with mapping quality >= 20
@@ -544,6 +554,11 @@ For the sake of going forward, we will sub-select reads with at least medium qua
 
    I will repeat here a recommendation given at the source `link <https://sequencing.qcfail.com/articles/mapq-values-are-really-useful-but-their-implementation-is-a-mess/>`__ above, as it is a good one: If you unsure what :math:`MAPQ` scoring scheme is being used in your own data then you can plot out the :math:`MAPQ` distribution in a BAM file using programs like the mentioned |qualimap| or similar programs.
    This will at least show you the range and frequency with which different :math:`MAPQ` values appear and may help identify a suitable threshold you may want to use.
+
+
+.. todo::
+
+    Please repeat the whole process for the second evolved strain => mapping and post-processing.
 
 
 Unmapped reads
@@ -556,10 +571,13 @@ Lets see how we can get the unmapped portion of the reads from the bam-file:
 
 .. code:: bash
 
-    samtools view -b -f 4 mappings/evolved-6.sorted.dedup.bam > mappings/evolved-6.sorted.unmapped.bam
+    $ samtools view -b -f 4 mappings/evol1.sorted.dedup.bam > mappings/evol1.sorted.unmapped.bam
+    # we are deleting the original to save space, 
+    # however, in reality you might want to save it to investigate later
+    $ rm mappings/evol1.sorted.dedup.bam
 
-    # count them
-    samtools view -c mappings/evolved-6.sorted.unmapped.bam
+    # count the unmapped reads
+    $ samtools view -c mappings/evol1.sorted.unmapped.bam
 
 
 - ``-b``: indicates that the output is BAM.
@@ -572,15 +590,15 @@ Lets extract the fastq sequence of the unmapped reads for read1 and read2.
 
 .. code:: bash
 
-    bamToFastq -i mappings/evolved-6.sorted.unmapped.bam -fq mappings/evolved-6.sorted.unmapped.R1.fastq -fq2  mappings/evolved-6.sorted.unmapped.R2.fastq
+    $ samtools fastq -1 mappings/evol1.sorted.unmapped.R1.fastq.gz -2 mappings/evol1.sorted.unmapped.R2.fastq.gz mappings/evol1.sorted.unmapped.bam
+    # delete not needed files
+    $ rm mappings/evol1.sorted.unmapped.bam
 
 
 .. only:: html
 
    .. rubric:: References
 
-
-.. [TRAPNELL2009] Trapnell C, Salzberg SL. How to map billions of short reads onto genomes. `Nat Biotechnol. (2009) 27(5):455-7. doi: 10.1038/nbt0509-455. <http://doi.org/10.1038/nbt0509-455>`__
 
 .. [LI2009] Li H, Durbin R. (2009). Fast and accurate short read alignment with Burrows-Wheeler transform. `Bioinformatics. 25 (14): 1754–1760. <https://doi.org/10.1093%2Fbioinformatics%2Fbtp324>`__
 
