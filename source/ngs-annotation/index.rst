@@ -255,8 +255,8 @@ Navigate to that window and open up your genome assembly:
 Load the tracks:
 
 - **File** -> **Load from File**
-- Load your unzipped ``vcf`` file from last week
-- Load your unzipped ``gff`` file from this week.
+- Load your unzipped ``vcf`` file from section: :ref:`ngs-variantcalling`
+- Load your unzipped ``gff`` file from this section.
 
 
 At this point you should be able to zoom in and out to see regions in which there are SNPs or other types of variants.
