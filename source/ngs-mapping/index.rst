@@ -63,7 +63,7 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you have not run the previous sections on :ref:`ngs-qc` and :ref:`ngs-assembly`, you can download the trimmed data and the genome assembly needed for this section here: :ref:`downloads`.
+    If you have not run the previous sections on :ref:`ngs-qc` and :ref:`ngs-assembly`, you can download the trimmed data and the genome assembly needed for this section here: :ref:`downloads`. Download the files to the ``~/analysis`` directory and decompress.
 
 
 

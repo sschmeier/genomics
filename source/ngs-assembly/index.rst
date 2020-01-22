@@ -56,7 +56,7 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you have not run the previous section :ref:`ngs-qc`, you can download the trimmed data needed for this section here: :ref:`downloads`.
+    If you have not run the previous section :ref:`ngs-qc`, you can download the trimmed data needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress.
 
 
 .. Subsampling reads

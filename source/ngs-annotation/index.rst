@@ -61,6 +61,12 @@ Lets see how our directory structure looks so far:
     variants/
 
 
+.. attention::
+
+    If you have not run the previous section :ref:`ngs-assembly`, you can download the genome assembly needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress.
+
+
+
 Installing the software
 -----------------------
 

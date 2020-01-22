@@ -61,7 +61,7 @@ First, we are going to download the data we will analyse. Open a shell/terminal.
    
 .. note::
 
-   Should the download fail, download manually from :ref:`downloads`.
+   Should the download fail, download manually from :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress.
 
 
    
