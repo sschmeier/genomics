@@ -6,7 +6,7 @@ Genome annotation
 Preface
 -------
 
-In this section you will predict genes and assess your assembly using |augustus| and |busco|.
+In this section you will predict genes and assess your assembly using |augustus| and |busco|, as well as |prokka|.
 
 .. .. Attention::
 
@@ -152,8 +152,8 @@ This gives an indication of your genome completeness.
    Is it necessarily true that your assembly is incomplete if it is missing some orthologues? Why or why not?
 
 
-Annotation
-----------
+Annotation with |augustus|
+--------------------------
 
 We will use |augustus| to perform gene prediction.
 This program implements a hidden markov model (HMM) to infer where genes lie in the assembly you have made.
@@ -175,6 +175,30 @@ To run the program you need to give it:
 
    Should the process of producing your annotation fail, you can download a
    annotation manually from :ref:`downloads`. Remember to unzip the file.
+
+
+Annotation with |prokka|
+------------------------
+
+Install |prokka|:
+
+
+.. code:: sh
+
+    $ conda create --yes -n prokka prokka
+    $ conda activate prokka
+
+
+
+Run |prokka|:
+
+
+.. code:: sh
+
+    $ prokka --kingdom Bacteria --genus Escherichia --species coli --outdir annotation_prokka assembly/scaffolds.fasta
+
+
+Your results will be in the ``annotation_prokka`` directory. 
 
 
 Interactive viewing
@@ -244,6 +268,9 @@ Open a new browser window and go to the blastn homepage.
 There, you can blast your gene of interest (GOI) and see if blast can assign a function to it.
 
 The end goal of this lab will be for you to select a variant that you feel is interesting (e.g. due to the gene it falls near or within), and hypothesize as to why that mutation might have increased in frequency in these evolving populations.
+
+
+
 
 
 
