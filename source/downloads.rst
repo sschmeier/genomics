@@ -23,7 +23,7 @@ Data
 * :ref:`ngs-mapping`: Mapping index (bwa) [ `DROPBOX <https://www.dropbox.com/s/ii3vbdj9yn916k4/mapping_idx.tar.gz?dl=0>`__ ]
 * :ref:`ngs-mapping`: Mapped data [ `DROPBOX <https://www.dropbox.com/s/8bporren0o230oo/mappings.tar.gz?dl=0>`__ ]
 * :ref:`ngs-variantcalling`: Called/filtered variants  [ `DROPBOX <https://www.dropbox.com/s/lraiepofsvkl1md/variants.tar.gz?dl=0>`__ ]
-* :ref:`ngs-annotation`: GFF annotation file [ `DROPBOX <https://www.dropbox.com/s/b1vc4k2whep66vq/my_new_bacteria.gff.gz?dl=0>`__ ]
+* :ref:`ngs-annotation`: GFF annotation file [ `DROPBOX <https://www.dropbox.com/s/16p9tb22lsvqxbg/annotation.tar.gz?dl=0>`__ ]
 
 * :ref:`ngs-orthology`: *S. cerevisiase* TEF2 gene file [ `DROPBOX <>`__ ]
 * :ref:`ngs-orthology`: BLAST file [ `DROPBOX <>`__ ]

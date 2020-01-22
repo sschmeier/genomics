@@ -160,7 +160,7 @@ This program implements a hidden markov model (HMM) to infer where genes lie in 
 To run the program you need to give it:
 
 - Information as to whether you would like the genes called on both strands (or just the forward or reverse strands)
-- A “model” organism on which it can base it’s HMM parameters on (in this case we will use S. cerevisiae)
+- A “model” organism on which it can base it’s HMM parameters on (in this case we will use E.coli)
 - The location of the assembly file
 - A name for the output file, which will be a .gff (general feature format) file.
 - We will also tell it to display a progress bar as it moves through the genome assembly.
@@ -168,7 +168,7 @@ To run the program you need to give it:
 
 .. code:: sh
   
-    $ augustus --progress=true --strand=both --species=E_coli_K12 --AUGUSTUS_CONFIG_PATH=config ../assembly/scaffolds.fasta > my_new_bacteria.gff 
+    $ augustus --progress=true --strand=both --species=E_coli_K12 --AUGUSTUS_CONFIG_PATH=config ../assembly/scaffolds.fasta > augustus.gff 
 
 
 .. note:: 
@@ -195,10 +195,10 @@ Run |prokka|:
 
 .. code:: sh
 
-    $ prokka --kingdom Bacteria --genus Escherichia --species coli --outdir annotation_prokka assembly/scaffolds.fasta
+    $ prokka --kingdom Bacteria --genus Escherichia --species coli --outdir annotation assembly/scaffolds.fasta
 
 
-Your results will be in the ``annotation_prokka`` directory. 
+Your results will be in the ``annotation`` directory with the prefix ``PROKKA``. 
 
 
 Interactive viewing
