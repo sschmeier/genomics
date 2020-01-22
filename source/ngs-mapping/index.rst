@@ -63,7 +63,7 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you sampled reads randomly for the assembly tutorial in the last section, please go and download first the assembly on the full data set. This can be found under :ref:`downloads`. Unarchive and uncompress the files with ``tar -xvzf assembly.tar.gz``.
+    If you have not run the previous sections on :ref:`ngs-qc` and :ref:`ngs-assembly`, you can download the trimmed data and the genome assembly needed for this section here: :ref:`downloads`.
 
 
 
@@ -560,6 +560,10 @@ For the sake of going forward, we will sub-select reads with at least medium qua
 
     Please repeat the whole process for the second evolved strain => mapping and post-processing.
 
+
+.. note::
+
+    Should you be unable to process the second evolved strain look at the coding solutions here: :ref:`code-map`
 
 Unmapped reads
 ~~~~~~~~~~~~~~

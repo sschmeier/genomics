@@ -54,6 +54,11 @@ Lets see how our directory structure looks so far:
     trimmed-fastqc/
 
 
+.. attention::
+
+    If you have not run the previous section :ref:`ngs-qc`, you can download the trimmed data needed for this section here: :ref:`downloads`.
+
+
 .. Subsampling reads
 .. ~~~~~~~~~~~~~~~~~
 
