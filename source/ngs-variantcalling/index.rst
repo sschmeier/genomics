@@ -58,7 +58,7 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you have not run the previous section on :ref:`ngs-mapping`, you can download the mapped data needed for this section here: :ref:`downloads`.
+    If you have not run the previous section on :ref:`ngs-mapping`, you can download the mapped data needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress.
 
    
 Installing necessary software
