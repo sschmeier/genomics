@@ -148,7 +148,10 @@ Code: Mapping post-processing
 
 .. code:: sh
 
-    # evol1
+    #
+    # Evol 1
+    #
+
     # fixmate and compress to bam
     samtools sort -n -O sam mappings/evol1.sam | samtools fixmate -m -O bam - mappings/evol1.fixmate.bam
     rm mappings/evol1.sam
@@ -168,7 +171,10 @@ Code: Mapping post-processing
     # delete not needed files
     rm mappings/evol1.sorted.unmapped.bam
 
-    # evol2
+    #
+    # Evol 2
+    #
+
     samtools sort -n -O sam mappings/evol2.sam | samtools fixmate -m -O bam - mappings/evol2.fixmate.bam
     rm mappings/evol2.sam
     samtools sort -O bam -o mappings/evol2.sorted.bam mappings/evol2.fixmate.bam
@@ -178,3 +184,49 @@ Code: Mapping post-processing
     samtools view -h -b -q 20 mappings/evol2.sorted.dedup.bam > mappings/evol2.sorted.dedup.q20.bam
     rm mappings/evol2.sorted.dedup.bam
 
+.. _code-var:
+
+Code: Variant calling
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code::
+
+    # index genome
+    samtools faidx assembly/scaffolds.fasta
+    mkdir variants
+
+    #   
+    # Evol 1
+    #
+
+    # index mappings
+    bamtools index -in mappings/evol1.sorted.dedup.q20.bam
+
+    # calling variants
+    freebayes -p 1 -f assembly/scaffolds.fasta mappings/evol1.sorted.dedup.q20.bam > variants/evol1.freebayes.vcf
+    # compress
+    bgzip variants/evol1.freebayes.vcf
+    # index
+    $ tabix -p vcf variants/evol1.freebayes.vcf.gz
+
+    # filtering
+    zcat variants/evol1.freebayes.vcf.gz | vcffilter -f "QUAL > 1 & QUAL / AO > 10 & SAF > 0 & SAR > 0 & RPR > 1 & RPL > 1" | bgzip > variants/evol1.freebayes.filtered.vcf.gz
+    tabix -p vcf variants/evol1.freebayes.filtered.vcf.gz
+
+    #
+    # Evol 2
+    #
+
+    # index mappings
+    bamtools index -in mappings/evol2.sorted.dedup.q20.bam
+
+    # calling variants
+    freebayes -p 1 -f assembly/scaffolds.fasta mappings/evol2.sorted.dedup.q20.bam > variants/evol2.freebayes.vcf
+    # compress
+    bgzip variants/evol2.freebayes.vcf
+    # index
+    $ tabix -p vcf variants/evol2.freebayes.vcf.gz
+
+    # filtering
+    zcat variants/evol2.freebayes.vcf.gz | vcffilter -f "QUAL > 1 & QUAL / AO > 10 & SAF > 0 & SAR > 0 & RPR > 1 & RPL > 1" | bgzip > variants/evol2.freebayes.filtered.vcf.gz
+    tabix -p vcf variants/evol2.freebayes.filtered.vcf.gz

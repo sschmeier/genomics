@@ -24,8 +24,8 @@ The part of the workflow we will work on in this section can be viewed in :numre
 .. figure:: images/workflow.png
 
    The part of the workflow we will work on in this section marked in red.
-   
-     
+
+
 Learning outcomes
 -----------------
 
@@ -231,17 +231,17 @@ First, to prepare out vcf-file for querying we need to index it with ``tabix``:
     $ tabix -p vcf variants/evol1.freebayes.vcf.gz
 
 
-- ``-p vcf``: input format 
+- ``-p vcf``: input format
 
 
 We can get some quick stats with ``rtg vcfstats``:
 
 
 .. code:: sh
-               
+
     $ rtg vcfstats variants/evol1.freebayes.vcf.gz
 
-   
+
 Example output from ``rtg vcfstats``:
 
 
@@ -266,14 +266,14 @@ Example output from ``rtg vcfstats``:
     Insertion/Deletion ratio     : 0.60 (3/5)
     Indel/SNP+MNP ratio          : 0.13 (8/61)
 
-   
 
-   
+
+
 However, we can also run |bcftools| to extract more detailed statistics about our variant calls:
-   
+
 
 .. code:: sh
-               
+
     $ bcftools stats -F assembly/scaffolds.fasta -s - variants/evol1.freebayes.vcf.gz > variants/evol1.freebayes.vcf.gz.stats
 
 
@@ -351,7 +351,7 @@ Here we filter, based on some recommendation form the developer of |freebayes|:
 
 .. code:: sh
 
-   $ zcat variants/evol1.freebayes.vcf.gz | vcffilter -f "QUAL > 1 & QUAL / AO > 10 & SAF > 0 & SAR > 0 & RPR > 1 & RPL > 1" | gzip > variants/evol1.freebayes.filtered.vcf.gz
+    $ zcat variants/evol1.freebayes.vcf.gz | vcffilter -f "QUAL > 1 & QUAL / AO > 10 & SAF > 0 & SAR > 0 & RPR > 1 & RPL > 1" | bgzip > variants/evol1.freebayes.filtered.vcf.gz
 
 
 - ``QUAL > 1``: removes really bad sites
@@ -359,6 +359,14 @@ Here we filter, based on some recommendation form the developer of |freebayes|:
 - ``SAF > 0 & SAR > 0``: reads on both strands
 - ``RPR > 1 & RPL > 1``: at least two reads “balanced” to each side of the site
 
+
+.. code:: sh
+
+    $ tabix -p vcf variants/evol1.freebayes.filtered.vcf.gz
+
+
+This strategy used here will do for our purposes.
+However, several more elaborate filtering strategies have been explored, e.g. `here <https://github.com/ekg/freebayes#observation-filters-and-qualities>`__.
 
 
 .. todo::
@@ -370,9 +378,10 @@ Here we filter, based on some recommendation form the developer of |freebayes|:
 .. todo::
 
     Call and filter variants for the second evolved strain, similarily to what ws described here for the first strain.
+    Should you be unable to do it, check the code section: :ref:`code-var`.
 
-This strategy used here will do for our purposes.
-However, several more elaborate filtering strategies have been explored, e.g. `here <https://github.com/ekg/freebayes#observation-filters-and-qualities>`__.
+
+
 
 
 

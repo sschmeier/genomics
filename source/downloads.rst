@@ -16,6 +16,7 @@ Tools
 * RAxML-NG [ `EXTERNAL <https://github.com/amkozlov/raxml-ng/releases/download/0.3.0/raxml-ng_v0.3.0b_linux_x86_64.zip>`__  | `DROPBOX <https://www.dropbox.com/s/iliws53ri5z4y69/raxml-ng_v0.3.0b_linux_x86_64.zip?dl=0>`__ ]
 * BUSCO Saccharomycetales_odb9 database [ `EXTERNAL <http://busco.ezlab.org/datasets/saccharomycetales_odb9.tar.gz>`__ | `DROPBOX <https://www.dropbox.com/s/7ow5yi6s5a0ente/saccharomycetales_odb9.tar.gz?dl=0>`__ ]
 
+
 Data
 ----
 
@@ -24,6 +25,7 @@ Data
 * :ref:`ngs-assembly`: Assembled data-set [ `DROPBOX  <https://www.dropbox.com/s/h906x9maw879t5s/assembly.tar.gz?dl=0>`__ ]
 * :ref:`ngs-mapping`: Mapping index (bwa) [ `DROPBOX <https://www.dropbox.com/s/ii3vbdj9yn916k4/mapping_idx.tar.gz?dl=0>`__ ]
 * :ref:`ngs-mapping`: Mapped data [ `DROPBOX <https://www.dropbox.com/s/8bporren0o230oo/mappings.tar.gz?dl=0>`__ ]
+* :ref:`ngs-variantcalling`: Called/filtered variants  [ `DROPBOX <https://www.dropbox.com/s/lraiepofsvkl1md/variants.tar.gz?dl=0>`__ ]
 
 * :ref:`ngs-annotation`: GFF annotation file [ `DROPBOX <>`__ ]
 * :ref:`ngs-orthology`: *S. cerevisiase* TEF2 gene file [ `DROPBOX <>`__ ]
