@@ -1,7 +1,7 @@
 .. _taxonomic-investigation:
 
-Taxonomic profiling
-===================
+Taxonomic investigation
+=======================
 
 
 Preface
@@ -51,6 +51,10 @@ Lets see how our directory structure looks so far:
     trimmed/
     trimmed-fastqc/
 
+
+.. attention::
+
+    If you have not run the previous section :ref:`ngs-mapping`, you can download the unmapped sequencing data needed for this section here: :ref:`downloads`.
 
 Kraken2
 -------

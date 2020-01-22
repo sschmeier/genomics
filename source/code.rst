@@ -116,30 +116,32 @@ Code: BWA mapping
     bwa mem assembly/scaffolds.fasta trimmed/evol2_R1.fastq.gz trimmed/evol2_R2.fastq.gz > mappings/evol2.sam
 
 
-.. _code-bowtie1:
+.. .. _code-bowtie1:
 
-Code: Bowtie2 indexing
-~~~~~~~~~~~~~~~~~~~~~~
+.. Code: Bowtie2 indexing
+.. ~~~~~~~~~~~~~~~~~~~~~~
 
-*Build the index:*
+.. *Build the index:*
 
-.. code:: sh
+.. .. code:: sh
 
-   bowtie2-build assembly/scaffolds.fasta assembly/scaffolds
+..    bowtie2-build assembly/scaffolds.fasta assembly/scaffolds
 
 
-.. _code-bowtie2:
+.. .. _code-bowtie2:
 
-Code: Bowtie2 mapping
-~~~~~~~~~~~~~~~~~~~~~~
+.. Code: Bowtie2 mapping
+.. ~~~~~~~~~~~~~~~~~~~~~~
 
-*Map to the genome. Use a max fragement length of 1000 bp:*
+.. *Map to the genome. Use a max fragement length of 1000 bp:*
 
-.. code:: sh
+.. .. code:: sh
 
-   bowtie2 -X 1000 -x assembly/scaffolds -1 trimmed/evol1_R1.fastq.gz -2 trimmed/evol1_R2.fastq.gz -S mappings/evol1.sam
-   bowtie2 -X 1000 -x assembly/scaffolds -1 trimmed/evol2_R1.fastq.gz -2 trimmed/evol2_R2.fastq.gz -S mappings/evol2.sam
+..    bowtie2 -X 1000 -x assembly/scaffolds -1 trimmed/evol1_R1.fastq.gz -2 trimmed/evol1_R2.fastq.gz -S mappings/evol1.sam
+..    bowtie2 -X 1000 -x assembly/scaffolds -1 trimmed/evol2_R1.fastq.gz -2 trimmed/evol2_R2.fastq.gz -S mappings/evol2.sam
 
+
+.. _code-map:
 
 Code: Mapping post-processing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

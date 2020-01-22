@@ -40,19 +40,25 @@ Before we start
 
 Lets see how our directory structure looks so far:
 
-.. code:: bash
+.. code:: sh
 
-          cd ~/analysis
-          ls -1F
+    $ cd ~/analysis
+    $ ls -1F
 
-.. code:: bash
+.. code:: sh
 
-          assembly/
-          data/
-          kraken/
-          mappings/
-          trimmed/
-          trimmed-fastqc/
+    assembly/
+    data/
+    kraken/
+    mappings/
+    multiqc_data/
+    trimmed/
+    trimmed-fastqc/
+
+
+.. attention::
+
+    If you have not run the previous section on :ref:`ngs-mapping`, you can download the mapped data needed for this section here: :ref:`downloads`.
 
    
 Installing necessary software
@@ -60,89 +66,82 @@ Installing necessary software
   
 Tools we are going to use in this section and how to intall them if you not have done it yet.
 
-.. code:: bash
+.. code:: sh
 
-          # activate the env
-          conda activate ngs
-          
-          # Install these tools into the conda environment
-          # if not already installed
-          conda install samtools
-          conda install bamtools
-          conda install freebayes
-          conda install bedtools
-          conda install vcflib
-          conda install rtg-tools
-          conda install bcftools
+    # activate the env
+    $ conda create --yes -n var samtools bamtools freebayes bedtools vcflib rtg-tools bcftools matplotlib
+    $ conda activate var
 
           
 Preprocessing
 -------------
 
 We first need to make an index of our reference genome as this is required by the SNP caller.
-Given a scaffold/contig file in fasta-format, e.g. ``scaffolds.fasta`` which is located in the directory ``assembly/spades_final``, use |samtools| to do this:
+Given a scaffold/contig file in fasta-format, e.g. ``scaffolds.fasta`` which is located in the directory ``assembly/``, use |samtools| to do this:
 
 
-.. code:: bash
+.. code:: sh
           
-          samtools faidx assembly/spades_final/scaffolds.fasta
+    $ samtools faidx assembly/scaffolds.fasta
    
 
 Furthermore we need to pre-process our mapping files a bit further and create a bam-index file (``.bai``) for the bam-file we want to work with:
 
 
-.. code:: bash
+.. code:: sh
                
-          bamtools index -in mappings/evolved-6.sorted.dedup.q20.bam
+    $ bamtools index -in mappings/evol1.sorted.dedup.q20.bam
 
 
 Lets also create a new directory for the variants:
 
 
-.. code:: bash
+.. code:: sh
 
-          mkdir variants
+    $ mkdir variants
 
           
 Calling variants
 ----------------
 
-SAMtools mpileup
-~~~~~~~~~~~~~~~~
+.. SAMtools mpileup
+.. ~~~~~~~~~~~~~~~~
 
-We use the sorted filtered bam-file that we produced in the mapping step before.
+.. We use the sorted filtered bam-file that we produced in the mapping step before.
 
-.. code:: bash
+.. .. code:: sh
 
-   # We first pile up all the reads and then call variants
-   samtools mpileup -u -g -f assembly/spades_final/scaffolds.fasta mappings/evolved-6.sorted.dedup.q20.bam | bcftools call -v -m -O z -o variants/evolved-6.mpileup.vcf.gz
+..     # We first pile up all the reads and then call variants
+..     $ samtools mpileup -u -g -f assembly/scaffolds.fasta mappings/evol1.sorted.dedup.q20.bam | bcftools call -v -m -O z -o variants/evol1.mpileup.vcf.gz
    
-|samtools| mpileup parameter:
+.. |samtools| mpileup parameter:
 
-- ``-u``: uncompressed output
-- ``-g``: generate genotype likelihoods in BCF format
-- ``-f FILE``: faidx indexed reference sequence file
+.. - ``-u``: uncompressed output
+.. - ``-g``: generate genotype likelihoods in BCF format
+.. - ``-f FILE``: faidx indexed reference sequence file
   
-|bcftools| view parameter:
+.. |bcftools| view parameter:
 
-- ``-v``: output variant sites only
-- ``-m``: alternative model for multiallelic and rare-variant calling
-- ``-o``: output file-name
-- ``-O z``: output type: 'z' compressed VCF
+.. - ``-v``: output variant sites only
+.. - ``-m``: alternative model for multiallelic and rare-variant calling
+.. - ``-o``: output file-name
+.. - ``-O z``: output type: 'z' compressed VCF
 
   
 Freebayes
 ~~~~~~~~~
 
-As an alternative we can do some variant calling with another tool called |freebayes|.
+We can call variants with a tool called |freebayes|.
 Given a reference genome scaffold file in fasta-format, e.g. ``scaffolds.fasta`` and the index in ``.fai`` format and a mapping file (.bam file) and a mapping index (.bai file), we can call variants with |freebayes| like so:
 
-.. code:: bash
+.. code:: sh
 
-   # Now we call variants and pipe the results into a new file
-   freebayes -f assembly/spades_final/scaffolds.fasta mappings/evolved-6.sorted.dedup.q20.bam | gzip > variants/evolved-6.freebayes.vcf.gz
+    # Now we call variants and pipe the results into a new file
+    $ freebayes -p 1 -f assembly/scaffolds.fasta mappings/evol1.sorted.dedup.q20.bam > variants/evol1.freebayes.vcf
 
-         
+- ``-p 1``: specifies the ploidy level. *E.Coli* are haploid.
+
+
 Post-processing
 ---------------
 
@@ -151,40 +150,40 @@ Understanding the output files (.vcf)
 
 Lets look at a vcf-file:
 
-.. code:: bash
+.. code:: sh
 
-   # first 10 lines, which are part of the header
-   zcat variants/evolved-6.mpileup.vcf.gz | head
+    # first 10 lines, which are part of the header
+    $ cat variants/evol1.freebayes.vcf | head
 
           
-.. code:: bash
+.. code:: sh
    
-   ##fileformat=VCFv4.2
-   ##FILTER=<ID=PASS,Description="All filters passed">
-   ##samtoolsVersion=1.3.1+htslib-1.3.1
-   ##samtoolsCommand=samtools mpileup -g -f assembly/spades_final/scaffolds.fasta -o variants/evolved-6.mpileup.bcf mappings/evolved-6.sorted.q20.bam
-   ##reference=file://assembly/spades_final/scaffolds.fasta
-   ##contig=<ID=NODE_1_length_1419525_cov_15.3898,length=1419525>
-   ##contig=<ID=NODE_2_length_1254443_cov_15.4779,length=1254443>
-   ##contig=<ID=NODE_3_length_972329_cov_15.3966,length=972329>
-   ##contig=<ID=NODE_4_length_951685_cov_15.4231,length=951685>
-   ##contig=<ID=NODE_5_length_925222_cov_15.39,length=925222>
-   ##contig=<ID=NODE_6_length_916533_cov_15.4426,length=916533>
+    ##fileformat=VCFv4.2
+    ##fileDate=20200122
+    ##source=freeBayes v1.3.1-dirty
+    ##reference=assembly/scaffolds.fasta
+    ##contig=<ID=NODE_1_length_348724_cov_30.410613,length=348724>
+    ##contig=<ID=NODE_2_length_327290_cov_30.828326,length=327290>
+    ##contig=<ID=NODE_3_length_312063_cov_30.523209,length=312063>
+    ##contig=<ID=NODE_4_length_202800_cov_31.500777,length=202800>
+    ##contig=<ID=NODE_5_length_164027_cov_28.935175,length=164027>
+    ##contig=<ID=NODE_6_length_144088_cov_29.907986,length=144088>
 
 Lets look at the variants:
 
-.. code:: bash
+.. code:: sh
                
-   # remove header lines and look at top 4 entires
-   zcat variants/evolved-6.mpileup.vcf.gz | egrep -v '##' | head -4
+    # remove header lines and look at top 4 entires
+    $ cat variants/evol1.freebayes.vcf | grep -v '##' | head -4
 
           
-.. code:: bash
+.. code:: sh
           
-   #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  mappings/evolved-6.sorted.q20.bam
-   NODE_1_length_1419525_cov_15.3898       24721   .       T       C       164     .       DP=12;VDB=0.205941;SGB=-0.680642;MQ0F=0;AC=2;AN=2;DP4=0,0,12,0;MQ=40     GT:PL   1/1:191,36,0
-   NODE_1_length_1419525_cov_15.3898       157033  .       AAGAGAGAGAGAGAGAGAGAGAGA        AAGAGAGAGAGAGAGAGAGAGA  39.3328  .       INDEL;IDV=6;IMF=0.146341;DP=41;VDB=0.0813946;SGB=-0.616816;MQSB=1;MQ0F=0;ICB=1;HOB=0.5;AC=1;AN=2;DP4=13,17,3,3;MQ=42     GT:PL   0/1:75,0,255
-   NODE_1_length_1419525_cov_15.3898       162469  .       T       C       19.609  .       DP=16;VDB=0.045681;SGB=-0.511536;RPB=0.032027;MQB=0.832553;BQB=0.130524;MQ0F=0;ICB=1;HOB=0.5;AC=1;AN=2;DP4=13,0,3,0;MQ=39        GT:PL   0/1:54,0,155
+    #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  unknown
+    NODE_1_length_348724_cov_30.410613      375     .       A       C       0       .       AB=0;ABP=0;AC=0;AF=0;AN=1;AO=3;CIGAR=1X;DP=21;DPB=21;DPRA=0;EPP=3.73412;EPPR=3.49285;GTI=0;LEN=1;MEANALT=1;MQM=44;MQMR=40.3333;NS=1;NUMALT=1;ODDS=63.5226;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=53;QR=414;RO=18;RPL=2;RPP=3.73412;RPPR=7.35324;RPR=1;RUN=1;SAF=3;SAP=9.52472;SAR=0;SRF=14;SRP=15.074;SRR=4;TYPE=snp       GT:DP:AD:RO:QR:AO:QA:GL      0:21:18,3:18:414:3:53:0,-29.6927
+    NODE_1_length_348724_cov_30.410613      393     .       T       A       0       .       AB=0;ABP=0;AC=0;AF=0;AN=1;AO=2;CIGAR=1X;DP=24;DPB=24;DPRA=0;EPP=7.35324;EPPR=6.56362;GTI=0;LEN=1;MEANALT=1;MQM=36;MQMR=42.9545;NS=1;NUMALT=1;ODDS=127.074;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=21;QR=717;RO=22;RPL=2;RPP=7.35324;RPPR=3.0103;RPR=0;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=17;SRP=17.2236;SRR=5;TYPE=snp       GT:DP:AD:RO:QR:AO:QA:GL      0:24:22,2:22:717:2:21:0,-57.4754
+    NODE_1_length_348724_cov_30.410613      612     .       A       C       2.32041e-15     .       AB=0;ABP=0;AC=0;AF=0;AN=1;AO=3;CIGAR=1X;DP=48;DPB=48;DPRA=0;EPP=9.52472;EPPR=11.1654;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=60;NS=1;NUMALT=1;ODDS=296.374;PAIRED=1;PAIREDR=0.977778;PAO=0;PQA=0;PQR=0;PRO=0;QA=53;QR=1495;RO=45;RPL=0;RPP=9.52472;RPPR=3.44459;RPR=3;RUN=1;SAF=3;SAP=9.52472;SAR=0;SRF=19;SRP=5.37479;SRR=26;TYPE=snp  GT:DP:AD:RO:QR:AO:QA:GL      0:48:45,3:45:1495:3:53:0,-129.869
+
 
 
 The fields in a vcf-file are described in he table (:numref:`table-vcf`) below:
@@ -217,7 +216,6 @@ The fields in a vcf-file are described in he table (:numref:`table-vcf`) below:
    +-----+-----------+--------------------------------------------------------------------------------------+
 
 
-          
 Statistics
 ~~~~~~~~~~
 
@@ -225,9 +223,12 @@ Now we can use it to do some statistics and filter our variant calls.
 
 First, to prepare out vcf-file for querying we need to index it with ``tabix``:
 
-.. code:: bash
+.. code:: sh
 
-   tabix -p vcf variants/evolved-6.mpileup.vcf.gz
+    # compress file 
+    $ bgzip variants/evol1.freebayes.vcf
+    # index
+    $ tabix -p vcf variants/evol1.freebayes.vcf.gz
 
 
 - ``-p vcf``: input format 
@@ -236,43 +237,44 @@ First, to prepare out vcf-file for querying we need to index it with ``tabix``:
 We can get some quick stats with ``rtg vcfstats``:
 
 
-.. code:: bash
+.. code:: sh
                
-   rtg vcfstats variants/evolved-6.mpileup.vcf.gz
+    $ rtg vcfstats variants/evol1.freebayes.vcf.gz
 
    
 Example output from ``rtg vcfstats``:
 
 
-.. code::
+.. code:: sh
 
-   Location                     : variants/evolved-6.mpileup.vcf.gz
-   Failed Filters               : 0
-   Passed Filters               : 516
-   SNPs                         : 399
-   MNPs                         : 0
-   Insertions                   : 104
-   Deletions                    : 13
-   Indels                       : 0
-   Same as reference            : 0
-   SNP Transitions/Transversions: 1.87 (286/153)
-   Total Het/Hom ratio          : 3.20 (393/123)
-   SNP Het/Hom ratio            : 8.98 (359/40)
-   MNP Het/Hom ratio            : - (0/0)
-   Insertion Het/Hom ratio      : 0.30 (24/80)
-   Deletion Het/Hom ratio       : 3.33 (10/3)
-   Indel Het/Hom ratio          : - (0/0)
-   Insertion/Deletion ratio     : 8.00 (104/13)
-   Indel/SNP+MNP ratio          : 0.29 (117/399)
+    Location                     : variants/evol1.freebayes.vcf.gz
+    Failed Filters               : 0
+    Passed Filters               : 35233
+    SNPs                         : 55
+    MNPs                         : 6
+    Insertions                   : 3
+    Deletions                    : 5
+    Indels                       : 0
+    Same as reference            : 35164
+    SNP Transitions/Transversions: 0.83 (25/30)
+    Total Haploid                : 69
+    Haploid SNPs                 : 55
+    Haploid MNPs                 : 6
+    Haploid Insertions           : 3
+    Haploid Deletions            : 5
+    Haploid Indels               : 0
+    Insertion/Deletion ratio     : 0.60 (3/5)
+    Indel/SNP+MNP ratio          : 0.13 (8/61)
+
    
 
    
 However, we can also run |bcftools| to extract more detailed statistics about our variant calls:
    
 
-.. code:: bash
+.. code:: sh
                
-   bcftools stats -F assembly/spades_final/scaffolds.fasta -s - variants/evolved-6.mpileup.vcf.gz > variants/evolved-6.mpileup.vcf.gz.stats
+    $ bcftools stats -F assembly/scaffolds.fasta -s - variants/evol1.freebayes.vcf.gz > variants/evol1.freebayes.vcf.gz.stats
 
 
 - ``-s -``: list of samples for sample stats, "-" to include all samples
@@ -282,10 +284,10 @@ However, we can also run |bcftools| to extract more detailed statistics about ou
 Now we take the stats and make some plots (e.g. :numref:`fig-vcfstats`) which are particular of interest if having multiple samples, as one can easily compare them. However, we are only working with one here:
 
 
-.. code:: bash
+.. code:: sh
    
-   mkdir variants/plots
-   plot-vcfstats -p variants/plots/ variants/evolved-6.mpileup.vcf.gz.stats
+    $ mkdir variants/plots
+    $ plot-vcfstats -p variants/plots/ variants/evol1.freebayes.vcf.gz.stats
 
    
 - ``-p``: The output files prefix, add a slash at the end to create a new directory.
@@ -310,45 +312,46 @@ For one, we can filter out low quality reads.
 Here, we only include variants that have quality > 30.
 
 
-.. code:: bash
+.. code:: sh
 
-   # use rtg vcfffilter
-   rtg vcffilter -q 30 -i variants/evolved-6.mpileup.vcf.gz -o variants/evolved-6.mpileup.q30.vcf.gz
+    # use rtg vcfffilter
+    $ rtg vcffilter -q 30 -i variants/evol1.freebayes.vcf.gz -o variants/evol1.freebayes.q30.vcf.gz
 
 
 - ``-i FILE``: input file
 - ``-o FILE``: output file
 - ``-q FLOAT``: minimal allowed quality in output.
-  
-   
+
+
 or use |vcflib|:
 
 
-.. code:: bash
+.. code:: sh
 
-   # or use vcflib
-   zcat variants/evolved-6.mpileup.vcf.gz  | vcffilter -f "QUAL >= 30" | gzip > variants/evolved-6.mpileup.q30.vcf.gz z
-      
+    # or use vcflib
+    $ zcat variants/evol1.freebayes.vcf.gz  | vcffilter -f "QUAL >= 30" | gzip > variants/evol1.freebayes.q30.vcf.gz
+
+
 - ``-f "QUAL >= 30"``: we only include variants that have been called with quality >= 30.
 
 
 Quick stats for the filtered variants:
-  
-.. code:: bash 
-          
-   # look at stats for filtered 
-   rtg vcfstats variants/evolved-6.mpileup.q30.vcf.gz
+
+.. code:: sh
+
+    # look at stats for filtered
+    $ rtg vcfstats variants/evol1.freebayes.q30.vcf.gz
 
 
 |freebayes| adds some extra information to the vcf-files it creates.
 This allows for some more detailed filtering.
-This strategy will NOT work on the |samtools| mpileup called variants
+This strategy will NOT work on calls done with e.g. |samtools|/bcftools mpileup called variants.
 Here we filter, based on some recommendation form the developer of |freebayes|:
 
 
-.. code:: bash
+.. code:: sh
 
-   zcat variants/evolved-6.freebayes.vcf.gz  | vcffilter -f "QUAL > 1 & QUAL / AO > 10 & SAF > 0 & SAR > 0 & RPR > 1 & RPL > 1" | gzip > variants/evolved-6.freebayes.filtered.vcf.gz
+   $ zcat variants/evol1.freebayes.vcf.gz | vcffilter -f "QUAL > 1 & QUAL / AO > 10 & SAF > 0 & SAR > 0 & RPR > 1 & RPL > 1" | gzip > variants/evol1.freebayes.filtered.vcf.gz
 
 
 - ``QUAL > 1``: removes really bad sites
@@ -356,13 +359,17 @@ Here we filter, based on some recommendation form the developer of |freebayes|:
 - ``SAF > 0 & SAR > 0``: reads on both strands
 - ``RPR > 1 & RPL > 1``: at least two reads “balanced” to each side of the site
 
-   
-  
-.. todo::
-    
-   Look at the statistics. One ratio that is mentioned in the statistics is transition transversion ratio (*ts/tv*).
-   Explain what this ratio is and why the observed ratio makes sense. 
 
+
+.. todo::
+
+   Look at the statistics. One ratio that is mentioned in the statistics is transition transversion ratio (*ts/tv*).
+   Explain what this ratio is and why the observed ratio makes sense.
+
+
+.. todo::
+
+    Call and filter variants for the second evolved strain, similarily to what ws described here for the first strain.
 
 This strategy used here will do for our purposes.
 However, several more elaborate filtering strategies have been explored, e.g. `here <https://github.com/ekg/freebayes#observation-filters-and-qualities>`__.
