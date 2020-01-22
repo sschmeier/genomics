@@ -8,9 +8,9 @@ Preface
 
 In this section you will predict genes and assess your assembly using |augustus| and |busco|.
 
-.. Attention::
+.. .. Attention::
 
-   The annotation process will take up to 90 minutes. Start it as soon as possible.
+..    The annotation process will take up to 90 minutes. Start it as soon as possible.
 
 
 .. NOTE::
@@ -46,18 +46,19 @@ Lets see how our directory structure looks so far:
 
 .. code:: bash
 
-          cd ~/analysis
-          ls -1F
+    $ cd ~/analysis
+    $ ls -1F
 
 .. code:: bash
 
-         assembly/
-         data/
-         kraken/
-         mappings/
-         trimmed/
-         trimmed-fastqc/
-         variants/
+    assembly/
+    data/
+    kraken/
+    mappings/
+    multiqc_data/
+    trimmed/
+    trimmed-fastqc/
+    variants/
 
 
 Installing the software
@@ -65,10 +66,8 @@ Installing the software
 
 .. code:: bash
 
-          # activate the env
-          conda activate ngs
-          
-          conda install busco
+    # activate the env
+    $ conda create --yes -n anno busco
 
 
 This will install both the |augustus| [STANKE2005]_ and the |busco| [SIMAO2015]_ software, which we will use (separately) for gene prediction and assessment of assembly completeness, respectively.
@@ -77,51 +76,51 @@ Make a directory for the annotation results:
 
 .. code:: bash
 
-          mkdir annotation
-          cd annotation
+    $ mkdir annotation
+    $ cd annotation
 
 
 We need to get the database that |busco| will use to assess orthologue presence absence in our genome annotation.
-We will use wget for this:
+|busco| provides a command to list all available datasets and download datasets.
 
 .. code:: bash
 
-          wget http://busco.ezlab.org/datasets/saccharomycetales_odb9.tar.gz
-
-          # unpack the archive
-          tar -xzvf saccharomycetales_odb9.tar.gz
-
-          
-.. note::
-
-   Should the download fail, download manually from :ref:`downloads`.
+    $ busco --list-datasets
 
 
-          
+.. code:: sh
+
+    INFO:   Downloading information on latest versions of BUSCO data...
+
+    ################################################
+
+    Datasets available to be used with BUSCOv4 as of 2019/11/27:
+
+    bacteria_odb10
+        - acidobacteria_odb10
+        - actinobacteria_phylum_odb10
+            - actinobacteria_class_odb10
+                - corynebacteriales_odb10
+                - micrococcales_odb10
+                - propionibacteriales_odb10
+                - streptomycetales_odb10
+                - streptosporangiales_odb10
+            - coriobacteriia_odb10
+                - coriobacteriales_odb10
+    ...
+
+
+|Busco| will download the dataset when starting an analysis.
+
+
 We also need to place the configuration file for this program in a location in which we have "write" privileges.
 Do this recursively for the entire config directory, placing it into your current annotation directory:
 
 
 .. code:: bash
 
-          cp -r ~/miniconda3/envs/ngs/config/ ./
+    $ cp -r ~/miniconda3/envs/anno/config/ .
 
-
-We next need to specify the ``path`` to this config file so that the program knows where to look now that we have changed the location (note that this is all one line below):
-
-
-.. code:: bash
-          
-          export AUGUSTUS_CONFIG_PATH="~/analysis/annotation/config/"n
-
-          
-We next check that we have actually changed the ``path`` correctly.
-Entering this into the command should result in the file location being output on the next line of the command prompt.
-
-
-.. code:: bash
-
-          echo $AUGUSTUS_CONFIG_PATH
 
 
 Assessment of orthologue presence and absence
@@ -134,15 +133,23 @@ It uses |blastn| to make sure that it does not miss any part of any possible cod
 - A name for the output files
 - The name of the lineage database against which we are assessing orthologue presence absence (that we downloaded above)
 - An indication of the type of annotation we are doing (genomic, as opposed to transcriptomic or previously annotated protein files).
+- The config file to use
 
 .. code:: bash
   
-          busco -i ../assembly/spades_final/scaffolds.fasta -o file_name_of_your_choice -l ./saccharomycetales_odb9 -m geno
+    $ busco  -i ../assembly/scaffolds.fasta -o my_anno -l bacteria_odb10 -m geno --config config/config.ini
 
-          
-.. NOTE::
 
-   This should take about 90 minutes to run. So in the meantime do the next step.
+Navigate into the output directory you created.
+There are many directories and files in there containing information on the orthologues that were found, but here we are only really interested in one: the summary statistics.
+This is located in the ``short_summary*.txt`` file.
+Look at this file.
+It will note the total number of orthologues found, the number expected, and the number missing.
+This gives an indication of your genome completeness.
+
+.. TODO::
+
+   Is it necessarily true that your assembly is incomplete if it is missing some orthologues? Why or why not?
 
 
 Annotation
@@ -161,61 +168,73 @@ To run the program you need to give it:
 
 .. code:: bash
   
-          augustus --progress=true --strand=both --species=saccharomyces_cerevisiae_S288C ../assembly/spades_final/scaffolds.fasta > your_new_fungus.gff
+    $ augustus --progress=true --strand=both --species=E_coli_K12 --AUGUSTUS_CONFIG_PATH=config ../assembly/scaffolds.fasta > my_new_bacteria.gff 
 
 
 .. note:: 
 
    Should the process of producing your annotation fail, you can download a
    annotation manually from :ref:`downloads`. Remember to unzip the file.
-          
+
 
 Interactive viewing
 -------------------
 
 We will use the software |igv| to view the assembly, the gene predictions you have made, and the variants that you have called, all in one window. 
 
-Installing |igv|
-----------------
+|igv|
+~~~~~
 
-We will not install this software using |conda|.
-Instead, make a new directory in your home directory entitled “software”, and change into this directory.
-You will have to download the software from the Broad Institute:
+.. code:: sh
 
-.. code:: bash
+    $ conda activate anno
+    $ conda install --yes igv
 
-          mkdir software
-          cd software
-          wget http://data.broadinstitute.org/igv/projects/downloads/2.4/IGV_2.4.10.zip
 
-          # unzip the software:
-          unzip IGV_2.4.10.zip
+.. We will not install this software using |conda|.
+.. Instead, make a new directory in your home directory entitled “software”, and change into this directory.
+.. You will have to download the software from the Broad Institute:
 
-          # and change into that directory.
-          cd IGV_2.4.10.zip
+.. .. code:: bash
+
+..           mkdir software
+..           cd software
+..           wget http://data.broadinstitute.org/igv/projects/downloads/2.4/IGV_2.4.10.zip
+
+..           # unzip the software:
+..           unzip IGV_2.4.10.zip
+
+..           # and change into that directory.
+..           cd IGV_2.4.10.zip
           
-          # To run the interactive GUI, you will need to run the bash script in that directory:
-          bash igv.sh
+..           # To run the interactive GUI, you will need to run the bash script in that directory:
+..           bash igv.sh
 
 
-.. note::
+.. .. note::
 
-   Should the download fail, download manually from :ref:`downloads`.
+..    Should the download fail, download manually from :ref:`downloads`.
 
+
+To run IGV type:
+
+.. code:: sh
+
+    $ igv
                 
 This will open up a new window.
 Navigate to that window and open up your genome assembly:
 
-- Genome -> load Genome from File
-- Load your assembly, not your gff file.
+- **Genomes** -> **Load Genome from File**
+- Load your assembly (``scaffolds.fasta``), not your gff file.
 
 Load the tracks:
 
-- File -> Load from file
-- Load your ``vcf`` file from last week
-- Load your ``gff`` file from this week.
+- **File** -> **Load from File**
+- Load your unzipped ``vcf`` file from last week
+- Load your unzipped ``gff`` file from this week.
 
-  
+
 At this point you should be able to zoom in and out to see regions in which there are SNPs or other types of variants.
 You can also see the predicted genes.
 If you zoom in far enough, you can see the sequence (DNA and protein).
@@ -224,24 +243,17 @@ If you have time and interest, you can right click on the sequence and copy it.
 Open a new browser window and go to the blastn homepage.
 There, you can blast your gene of interest (GOI) and see if blast can assign a function to it.
 
-The end goal of this lab will be for you to select a variant that you feel is interesting (e.g. due to the gene it falls near or within), and hypothesize as to why that mutation might have increased in frequency in these evolving yeast populations.
+The end goal of this lab will be for you to select a variant that you feel is interesting (e.g. due to the gene it falls near or within), and hypothesize as to why that mutation might have increased in frequency in these evolving populations.
 
 
-Assessment of orthologue presence and absence (2)
--------------------------------------------------
 
-Hopefully your |busco| analysis will have finished by this time.
-Navigate into the output directory you created.
-There are many directories and files in there containing information on the orthologues that were found, but here we are only really interested in one: the summary statistics.
-This is located in the ``short_summary*.txt`` file.
-Look at this file.
-It will note the total number of orthologues found, the number expected, and the number missing.
-This gives an indication of your genome completeness.
+.. This is not working as the chomosome names are obviously differnt to the one in our scaffold
+.. Investigate variants with known annotation
+.. ------------------------------------------
 
-.. TODO::
+.. .. todo::
 
-   Is it necessarily true that your assembly is incomplete if it is missing some orthologues? Why or why not?
-
+..     Go to the `Ensembl website <http://bacteria.ensembl.org/>`__ and download the gff annotation for the E.coli strain with taxid: 413997. Load the annotation as well ion IGV. Check your SNPs.
 
 
 .. only:: html

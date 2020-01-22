@@ -7,7 +7,7 @@ Should you need to refresh your knowledge about either Linux or the command-line
 In this tutorial you will learn how to analyse next-generation sequencing (NGS) data.
 The data you will be using is actual research data.
 The experiment follows a similar strategy as in what is called an "experimental evolution" experiment [KAWECKI2012]_, [ZEYL2006]_.
-The final aim is to identify the genome variations in evolved lines of E. coli that can explain the observed biological phenotype(s).
+The final aim is to identify the genome variations in evolved lines of *E. coli* that can explain the observed biological phenotype(s).
 
 The workflow
 ------------
