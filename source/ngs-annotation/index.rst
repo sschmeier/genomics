@@ -44,12 +44,12 @@ Before we start
 
 Lets see how our directory structure looks so far:
 
-.. code:: bash
+.. code:: sh
 
     $ cd ~/analysis
     $ ls -1F
 
-.. code:: bash
+.. code:: sh
 
     assembly/
     data/
@@ -64,7 +64,7 @@ Lets see how our directory structure looks so far:
 Installing the software
 -----------------------
 
-.. code:: bash
+.. code:: sh
 
     # activate the env
     $ conda create --yes -n anno busco
@@ -74,7 +74,7 @@ This will install both the |augustus| [STANKE2005]_ and the |busco| [SIMAO2015]_
 
 Make a directory for the annotation results:
 
-.. code:: bash
+.. code:: sh
 
     $ mkdir annotation
     $ cd annotation
@@ -83,7 +83,7 @@ Make a directory for the annotation results:
 We need to get the database that |busco| will use to assess orthologue presence absence in our genome annotation.
 |busco| provides a command to list all available datasets and download datasets.
 
-.. code:: bash
+.. code:: sh
 
     $ busco --list-datasets
 
@@ -117,7 +117,7 @@ We also need to place the configuration file for this program in a location in w
 Do this recursively for the entire config directory, placing it into your current annotation directory:
 
 
-.. code:: bash
+.. code:: sh
 
     $ cp -r ~/miniconda3/envs/anno/config/ .
 
@@ -135,7 +135,7 @@ It uses |blastn| to make sure that it does not miss any part of any possible cod
 - An indication of the type of annotation we are doing (genomic, as opposed to transcriptomic or previously annotated protein files).
 - The config file to use
 
-.. code:: bash
+.. code:: sh
   
     $ busco  -i ../assembly/scaffolds.fasta -o my_anno -l bacteria_odb10 -m geno --config config/config.ini
 
@@ -166,7 +166,7 @@ To run the program you need to give it:
 - We will also tell it to display a progress bar as it moves through the genome assembly.
 
 
-.. code:: bash
+.. code:: sh
   
     $ augustus --progress=true --strand=both --species=E_coli_K12 --AUGUSTUS_CONFIG_PATH=config ../assembly/scaffolds.fasta > my_new_bacteria.gff 
 
@@ -195,7 +195,7 @@ We will use the software |igv| to view the assembly, the gene predictions you ha
 .. Instead, make a new directory in your home directory entitled “software”, and change into this directory.
 .. You will have to download the software from the Broad Institute:
 
-.. .. code:: bash
+.. .. code:: sh
 
 ..           mkdir software
 ..           cd software
@@ -207,8 +207,8 @@ We will use the software |igv| to view the assembly, the gene predictions you ha
 ..           # and change into that directory.
 ..           cd IGV_2.4.10.zip
           
-..           # To run the interactive GUI, you will need to run the bash script in that directory:
-..           bash igv.sh
+..           # To run the interactive GUI, you will need to run the sh script in that directory:
+..           sh igv.sh
 
 
 .. .. note::

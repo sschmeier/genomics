@@ -24,50 +24,51 @@ Before we start
 
 Lets see how our directory structure looks so far:
 
-.. code:: bash
+.. code:: sh
 
-         cd ~/analysis
-         ls -1F
+    $ cd ~/analysis
+    $ ls -1F
 
-.. code:: bash
+.. code:: sh
 
-         annotation/
-         assembly/
-         data/
-         kraken/
-         mappings/
-         trimmed/
-         trimmed-fastqc/
-         variants/
+    annotation/
+    assembly/
+    data/
+    kraken/
+    mappings/
+    multiqc_data/
+    trimmed/
+    trimmed-fastqc/
+    variants/
 
 
 Make a directory for the phylogeny results (in your analysis directory):
 
-.. code:: bash
+.. code:: sh
 
-          mkdir phylogeny
+    $ mkdir phylogeny
 
 
 Download the fasta file of the *S. cerevisiase* TEF2 gene to the phylogeny folder:
 
 
-.. code:: bash
+.. code:: sh
 
-          cd phylogeny
-          curl -O http://compbio.massey.ac.nz/data/203341/s_cerev_tef2.fas
+    $ cd phylogeny
+    $ curl -O http://compbio.massey.ac.nz/data/203341/s_cerev_tef2.fas
 
 
 .. note::
 
    Should the download fail, download manually from :ref:`downloads`.
 
-          
-         
+
+
 Installing the software
 -----------------------
 
 
-.. code:: bash
+.. code:: sh
 
           # activate the env
           conda activate ngs
@@ -78,7 +79,7 @@ Installing the software
 This will install a |blast| executable that you can use to remotely query the NCBI database.
 
 
-.. code:: bash
+.. code:: sh
 
           conda install muscle
 
@@ -90,7 +91,7 @@ maximum-likelihood (ML) optimality criterion. However, there is no conda
 repository for it yet. Thus, we need to download it manually.
 
 
-.. code:: bash
+.. code:: sh
           
           wget 
           https://github.com/amkozlov/raxml-ng/releases/download/0.5.1/raxml-ng_v0.5.1b_linux_x86_64.zip
@@ -108,7 +109,7 @@ find the orthologous sequence of the *S. cerevisiae* gene.
 To do this, we run the command ``makeblastdb``:
 
 
-.. code:: bash
+.. code:: sh
           
           # create blast db
           makeblastdb –in ../assembly/spades_final/scaffolds.fasta –dbtype nucl
@@ -125,7 +126,7 @@ To run |blast|, we give it:
 First, we blast without any formatting:
 
 
-.. code:: bash
+.. code:: sh
 
           blastn –db ../assembly/spades_final/scaffolds.fasta –query s_cerev_tef2.fas > blast.out
 
@@ -138,7 +139,7 @@ Read through the output (e.g. using ``nano``) to see what the results of your |b
    
 Next we will format the output a little so that it is easier to deal with.
 
-.. code:: bash
+.. code:: sh
           
           blastn –db ../assembly/spades_final/scaffolds.fasta –query s_cerev_tef2.fas –evalue 1e-100 –outfmt “6 length sseq” > blast_formatted.out
 
@@ -168,7 +169,7 @@ Now we will |blast| a remote database to get a list of hits that are already in 
    It turns out you may not be able to access this database from within BioLinux. In such a case, download the file named ``blast.fas`` and place it into your ``~/analysis/phylogeny/`` directory.
 
 
-.. code:: bash
+.. code:: sh
 
            curl -O http://compbio.massey.ac.nz/data/203341/blast_u.fas
            
@@ -188,7 +189,7 @@ We will use |muscle| to perform our alignment on all the sequences in the |blast
 This syntax is very simple (change the filenames accordingly):
 
 
-.. code:: bash
+.. code:: sh
 
           muscle –in infile.fas –out your_alignment.aln
 
@@ -209,7 +210,7 @@ The arguments are:
 - ``-p``: specify a random number seed for the parsimony inferences
 
   
-.. code:: bash
+.. code:: sh
 
           raxmlHPC -s your_alignment.aln -m GTRGAMMA –n yeast_tree –p 12345
 
