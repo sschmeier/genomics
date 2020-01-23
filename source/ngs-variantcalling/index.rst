@@ -103,30 +103,6 @@ Lets also create a new directory for the variants:
           
 Calling variants
 ----------------
-
-.. SAMtools mpileup
-.. ~~~~~~~~~~~~~~~~
-
-.. We use the sorted filtered bam-file that we produced in the mapping step before.
-
-.. .. code:: sh
-
-..     # We first pile up all the reads and then call variants
-..     $ samtools mpileup -u -g -f assembly/scaffolds.fasta mappings/evol1.sorted.dedup.q20.bam | bcftools call -v -m -O z -o variants/evol1.mpileup.vcf.gz
-   
-.. |samtools| mpileup parameter:
-
-.. - ``-u``: uncompressed output
-.. - ``-g``: generate genotype likelihoods in BCF format
-.. - ``-f FILE``: faidx indexed reference sequence file
-  
-.. |bcftools| view parameter:
-
-.. - ``-v``: output variant sites only
-.. - ``-m``: alternative model for multiallelic and rare-variant calling
-.. - ``-o``: output file-name
-.. - ``-O z``: output type: 'z' compressed VCF
-
   
 Freebayes
 ~~~~~~~~~

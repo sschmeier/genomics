@@ -1,5 +1,6 @@
 # Makefile for Sphinx documentation
 #
+PREFIX = Genomics
 
 # You can set these variables from the command line.
 SPHINXOPTS    = 
@@ -7,6 +8,7 @@ SPHINXBUILD   = sphinx-build
 PAPER         =
 # changed this to build page in a html dir in one dir up
 BUILDDIR      = build
+
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -248,7 +250,7 @@ dummy:
 .PHONY: deploy
 deploy:
 	make latexpdf
-	yes | cp -f build/latex/Genomics.pdf source/_static/
+	yes | cp -f build/latex/$(PREFIX).pdf source/_static/
 	git add -u
 	git commit -m "Updated pdf"
 	bump2version patch

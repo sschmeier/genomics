@@ -95,7 +95,6 @@ numfig = True
 # numfig_format={'figure': 'Figure %s', 'table': 'Table %s', 'code-block': 'Listing %s'}
 # numfig_secnum_depth = 1
 
-
 # -- Options for HTML output ----------------------------------------------
 
 import sphinx_rtd_theme
@@ -166,7 +165,6 @@ htmlhelp_basename = "GenomicsDoc"
 # of the sidebar.
 #
 html_logo = "images/icon.png"
-
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -269,13 +267,14 @@ texinfo_documents = [
         "teaching",
     ),
 ]
+
 rst_epilog = """
-.. |fileanc| replace:: ancestor
-.. |fileanc1| replace:: ancestor-R1
-.. |fileanc2| replace:: ancestor-R2
-.. |fileevol| replace:: evolved-6
-.. |fileevol1| replace:: evolved-6-R1
-.. |fileevol2| replace:: evolved-6-R2
+.. |fileanc| replace:: anc
+.. |fileanc1| replace:: anc_R1
+.. |fileanc2| replace:: anc_R2
+.. |fileevol| replace:: evol1
+.. |fileevol1| replace:: evol1_R1
+.. |fileevol2| replace:: evol1_R2
 .. |conda| replace:: `conda <http://conda.pydata.org/miniconda.html>`__
 .. |kraken| replace:: `Kraken2 <https://www.ccb.jhu.edu/software/kraken2/>`__
 .. |bracken| replace:: `Bracken <https://ccb.jhu.edu/software/bracken/index.shtml>`__

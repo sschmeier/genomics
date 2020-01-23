@@ -307,5 +307,5 @@ from several different *E.Coli* strains.
 
 .. _fig-blast-voi:
 .. figure:: images/blast.png
-    
+
     Results of a |blast| search of the CDS.
