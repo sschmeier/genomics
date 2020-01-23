@@ -165,93 +165,12 @@ Now that we have created our index, it is time to map the trimmed sequencing rea
    Should you not get it right, try the commands in :ref:`code-bwa2`.
 
 
-
-.. Bowtie2 (alternative to BWA)
-.. ----------------------------
-
-.. .. Attention::
-
-..    If the mapping did not succeed with |bwa|. We can use the aligner |bowtie|, explained in this section. If the mapping with |bwa| did work, you can jump straight ahead to :numref:`sam-file-format`.
-
-
-.. Install with:
-
-
-.. .. code:: bash
-
-..     $ conda activate mapping
-..     $ conda install --yes bowtie2
-
-
-.. Overview
-.. ~~~~~~~~
-
-.. |bowtie| is a short read aligner, that can take a reference genome and map single- or paired-end data to it [TRAPNELL2009]_.
-.. It requires an indexing step in which one supplies the reference genome and |bowtie| will create an index that in the subsequent steps will be used for aligning the reads to the reference genome.
-.. The general command structure of the |bowtie| tools we are going to use are shown below:
-
-
-.. .. code:: bash
-
-..    # bowtie2 help
-..    $ bowtie2-build
-
-..    # indexing
-..    $ bowtie2-build genome.fasta /path/to/index/prefix
-
-..    # paired-end mapping
-..    $ bowtie2 -X 1000 -x /path/to/index/prefix -1 read1.fq.gz -2 read2.fq.gz -S aln-pe.sam
-
-
-.. - ``-X``: Adjust the maximum fragment size (length of paired-end alignments + insert size) to 1000bp. This might be useful if you do not know the exact insert size of your data. The |bowtie| default is set to 500 which is `often considered too short <http://lab.loman.net/2013/05/02/use-x-with-bowtie2-to-set-minimum-and-maximum-insert-sizes-for-nextera-libraries/>`__.
-
-
-.. Creating a reference index for mapping
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. .. todo::
-
-..    Create an |bowtie| index for our reference genome assembly. Attention! Remember which file you need to submit to |bowtie|.
-
-
-.. .. hint::
-
-..    Should you not get it right, try the commands in :ref:`code-bowtie1`.
-
-
-.. .. note::
-
-..    Should you be unable to run |bowtie| indexing on the data, you can download the index from :ref:`downloads`. Unarchive and uncompress the files with ``tar -xvzf bowtie2-index.tar.gz``.
-
-
-
-.. Mapping reads in a paired-end manner
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. Now that we have created our index, it is time to map the filtered and trimmed sequencing reads of our evolved line to the reference genome.
-
-.. .. todo::
-
-..    Use the correct ``bowtie2`` command structure from above and map the reads of the evolved line to the reference genome.
-
-
-.. .. hint::
-
-..    Should you not get it right, try the commands in :ref:`code-bowtie2`.
-
-
-.. .. note::
-
-..    |bowtie| does give very cryptic error messages without telling much why it did not want to run. The most likely reason is that you specified the paths to the files and result file wrongly. Check this first. Use tab completion a lot!
-
-
-
 .. _sam-file-format:
 
 The sam mapping file-format
 ---------------------------
 
-|bwa| and |bowtie| will produce a mapping file in sam-format. Have a look into the sam-file that was created by either program.
+|bwa|, like most mappers, will produce a mapping file in sam-format. Have a look into the sam-file that was created by either program.
 A quick overview of the sam-format can be found `here <http://bio-bwa.sourceforge.net/bwa.shtml#4>`__ and even more information can be found `here <http://samtools.github.io/hts-specs/SAMv1.pdf>`__.
 Briefly, first there are a lot of header lines. Then, for each read, that mapped to the reference, there is one line.
 
