@@ -48,6 +48,9 @@ Make a directory for the phylogeny results (in your analysis directory):
 
     $ mkdir phylogeny
 
+.. todo:: 
+
+    Change this to gene of E.Coli
 
 Download the fasta file of the *S. cerevisiase* TEF2 gene to the phylogeny folder:
 
@@ -70,49 +73,22 @@ Installing the software
 
 .. code:: sh
 
-          # activate the env
-          conda activate ngs
+    $ conda create -n phylo blast muscle raxml-ng
 
-          conda install blast
-
-          
-This will install a |blast| executable that you can use to remotely query the NCBI database.
-
-
-.. code:: sh
-
-          conda install muscle
-
-
-This will install |muscle|, alignment program that you can use to align nucleotide or protein sequences.
-
-We will also install |raxml|, a phylogenetic tree inference tool, which uses
-maximum-likelihood (ML) optimality criterion. However, there is no conda
-repository for it yet. Thus, we need to download it manually.
-
-
-.. code:: sh
-          
-          wget 
-          https://github.com/amkozlov/raxml-ng/releases/download/0.5.1/raxml-ng_v0.5.1b_linux_x86_64.zip
-
-          unzip raxml-ng_v0.5.1b_linux_x86_64.zip
-
-          rm raxml-ng_v0.5.1b_linux_x86_64.zip
-
+This will install a |blast| executable that you can use to remotely query the NCBI database and the |muscle| alignment program that you can use to align nucleotide or protein sequences. 
+We also install |raxml|, a phylogenetic tree inference tool, which uses maximum-likelihood (ML) optimality criterion. 
 
 Finding orthologues using BLAST
 -------------------------------
 
-We will first make a |blast| database of our current assembly so that we can
-find the orthologous sequence of the *S. cerevisiae* gene.
+We will first make a |blast| database of our current assembly so that we can find the orthologous sequence of the *E.coli* gene.
 To do this, we run the command ``makeblastdb``:
 
 
 .. code:: sh
-          
-          # create blast db
-          makeblastdb –in ../assembly/spades_final/scaffolds.fasta –dbtype nucl
+
+    # create blast db
+    $ makeblastdb –in ../assembly/scaffolds.fasta –dbtype nucl
 
 
 To run |blast|, we give it:
@@ -122,28 +98,34 @@ To run |blast|, we give it:
 - A name for the output files
 - Some notes about the format we want
 
-  
 First, we blast without any formatting:
 
+.. todo:: 
+
+    Change this to gene of E.Coli
 
 .. code:: sh
 
-          blastn –db ../assembly/spades_final/scaffolds.fasta –query s_cerev_tef2.fas > blast.out
+    $ blastn –db ../assembly/scaffolds.fasta –query s_cerev_tef2.fas > blast.out
 
 
-This should output a file with a set of |blast| hits similar to what you might
-see on the |blast| web site.
+This should output a file with a set of |blast| hits similar to what you might see on the |blast| web site.
 
 Read through the output (e.g. using ``nano``) to see what the results of your |blast| run was.
 
-   
 Next we will format the output a little so that it is easier to deal with.
 
-.. code:: sh
-          
-          blastn –db ../assembly/spades_final/scaffolds.fasta –query s_cerev_tef2.fas –evalue 1e-100 –outfmt “6 length sseq” > blast_formatted.out
+.. todo:: 
 
-          
+    Change this to gene of E.Coli
+
+.. code:: sh
+
+    $ blastn –db ../assembly/scaffolds.fasta –query s_cerev_tef2.fas 
+             –evalue 1e-100 
+             –outfmt “6 length sseq” > blast_formatted.out
+
+
 This will yield a file that has only the sequences of the subject, so that we can later add those to other fasta files.
 However, the formatting is not perfect.
 To adjust the format such that it is fasta format, open the file in an editor (e.g. ``nano``) and edit the first line so that it has a name for your sequence.
@@ -156,7 +138,6 @@ You should know the general format of a fasta-file (e.g. the first line start wi
    To save in ``vi``, you will need to press the escape key and “w” (write).
    To quit ``vi``, you will need to press the escape key and “q” (quit).
 
-   
 Next, you have to replace the dashes (signifying indels in the |blast| result).
 This can easily be done in ``vi``:
 Press the escape key, followed by: ``:%s/\-//g``
@@ -166,14 +147,14 @@ Now we will |blast| a remote database to get a list of hits that are already in 
 
 .. note::
 
-   It turns out you may not be able to access this database from within BioLinux. In such a case, download the file named ``blast.fas`` and place it into your ``~/analysis/phylogeny/`` directory.
+   It turns out you may not be able to access this database from within the Linux distribution. In such a case, download the file named ``blast.fas`` and place it into your ``~/analysis/phylogeny/`` directory.
 
 
 .. code:: sh
 
-           curl -O http://compbio.massey.ac.nz/data/203341/blast_u.fas
-           
-           
+    $ curl -O http://compbio.massey.ac.nz/data/203341/blast_u.fas
+
+
 Append the fasta file of your yeast sequence to this file, using whatever set of commands you wish/know.
 
 
@@ -191,7 +172,7 @@ This syntax is very simple (change the filenames accordingly):
 
 .. code:: sh
 
-          muscle –in infile.fas –out your_alignment.aln
+    $ muscle –in infile.fas –out your_alignment.aln
 
 
 Building a phylogeny
@@ -212,7 +193,7 @@ The arguments are:
   
 .. code:: sh
 
-          raxmlHPC -s your_alignment.aln -m GTRGAMMA –n yeast_tree –p 12345
+    $ raxmlHPC -s your_alignment.aln -m GTRGAMMA –n ecoli_tree –p 12345
 
 
 Visualizing the phylogeny
@@ -224,6 +205,11 @@ Open the file containing your tree (``*bestTree.out``), copy the contents, and p
 
 You should then be able to zoom in and out to see where your yeast taxa is.
 To find out the closest relative, you will have to use the `NCBI taxa page <https://www.ncbi.nlm.nih.gov/Taxonomy/TaxIdentifier/tax_identifier.cgi>`__.
+
+
+.. todo:: 
+
+    Change this to E.Coli
 
 
 .. todo::
