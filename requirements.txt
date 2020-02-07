@@ -1,5 +1,5 @@
 sphinx==2.3.1
 sphinx-gitstamp==0.3.0
 sphinx-notfound-page==0.4
-sphinxcontrib-websupport==1.1.2
+sphinxcontrib-websupport==1.2.0
 sphinx-rtd-theme==0.4.3
