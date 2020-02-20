@@ -63,8 +63,15 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you have not run the previous sections on :ref:`ngs-qc` and :ref:`ngs-assembly`, you can download the trimmed data and the genome assembly needed for this section here: :ref:`downloads`. Download the files to the ``~/analysis`` directory and decompress.
+    If you have not run the previous sections on :ref:`ngs-qc` and :ref:`ngs-assembly`, you can download the trimmed data and the genome assembly needed for this section here: :ref:`downloads`. Download the files to the ``~/analysis`` directory and decompress. Alternatively on the CLI try: 
 
+    .. code:: bash
+
+         cd ~/analysis
+         wget -O trimmed.tar.gz https://osf.io/m3wpr/download 
+         tar xvzf trimmed.tar.gz
+         wget -O assembly.tar.gz https://osf.io/t2zpm/download
+         tar xvzf assembly.tar.gz
 
 
 Mapping sequence reads to a reference genome

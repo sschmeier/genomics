@@ -54,7 +54,13 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you have not run the previous section :ref:`ngs-mapping`, you can download the unmapped sequencing data needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress.
+    If you have not run the previous section :ref:`ngs-mapping`, you can download the unmapped sequencing data needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress. Alternatively on the CLI try: 
+
+    .. code:: bash
+
+         cd ~/analysis
+         wget -O mappings.tar.gz https://osf.io/g5at8/download
+         tar xvzf mappings.tar.gz
 
 Kraken2
 -------

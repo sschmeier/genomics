@@ -53,7 +53,7 @@ First, we are going to download the data we will analyse. Open a shell/terminal.
    $ cd analysis
 
    # download the data
-   $ wget http://compbio.massey.ac.nz/data/203341/data.tar.gz
+   $ wget -O data.tar.gz https://osf.io/2jc4a/download
 
    # uncompress it
    $ tar -xvzf data.tar.gz

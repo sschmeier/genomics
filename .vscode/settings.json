@@ -8,5 +8,6 @@
         "plaintext",
         "rst"
     ],
-    "restructuredtext.confPath": "${workspaceFolder}/source"
+    "restructuredtext.confPath": "${workspaceFolder}/source",
+    "python.linting.enabled": true
 }

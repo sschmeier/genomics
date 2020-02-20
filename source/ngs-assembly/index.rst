@@ -56,7 +56,14 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you have not run the previous section :ref:`ngs-qc`, you can download the trimmed data needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress.
+    If you have not run the previous section :ref:`ngs-qc`, you can download the trimmed data needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress. Alternatively on the CLI try: 
+
+    .. code:: bash
+
+         cd ~/analysis
+         wget -O trimmed.tar.gz https://osf.io/m3wpr/download 
+         tar xvzf trimmed.tar.gz
+
 
 
 .. Subsampling reads

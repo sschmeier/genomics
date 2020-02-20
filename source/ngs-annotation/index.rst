@@ -63,7 +63,13 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you have not run the previous section :ref:`ngs-assembly`, you can download the genome assembly needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress.
+    If you have not run the previous section :ref:`ngs-assembly`, you can download the genome assembly needed for this section here: :ref:`downloads`. Download the file to the ``~/analysis`` directory and decompress. Alternatively on the CLI try: 
+
+    .. code:: bash
+
+         cd ~/analysis
+         wget -O assembly.tar.gz https://osf.io/t2zpm/download
+         tar xvzf assembly.tar.gz
 
 
 

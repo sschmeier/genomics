@@ -5,9 +5,6 @@
 Computational Genomics Tutorial
 ===============================
 
-.. warning::
-      **This is a pre-release version. This is work in progress with a new dataset. For a working version please see** `https://genomics.sschmeier.com <https://genomics.sschmeier.com>`__ 
-
 This is an introductory tutorial for learning computational genomics mostly on the Linux command-line.
 You will learn how to analyse next-generation sequencing (NGS) data.
 The data you will be using is real research data.

@@ -64,7 +64,15 @@ Lets see how our directory structure looks so far:
 
 .. attention::
 
-    If you have not run the previous sections on :ref:`ngs-assembly` and :ref:`ngs-variantcalling`, you can download the variant calls and the genome assembly needed for this section here: :ref:`downloads`. Download the files to the ``~/analysis`` directory and decompress.
+    If you have not run the previous sections on :ref:`ngs-assembly` and :ref:`ngs-variantcalling`, you can download the variant calls and the genome assembly needed for this section here: :ref:`downloads`. Download the files to the ``~/analysis`` directory and decompress. Alternatively on the CLI try: 
+
+    .. code:: bash
+
+         cd ~/analysis
+         wget -O assembly.tar.gz https://osf.io/t2zpm/download
+         tar xvzf assembly.tar.gz
+         eget -O variants.tar.gz https://osf.io/4nzrm/download
+         tar xvzf variants.tar.gz
 
 
 General comments for identifying variants-of-interest
