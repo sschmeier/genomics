@@ -472,13 +472,15 @@ Lets first try to build one.
    $ ktUpdateTaxonomy.sh ~/krona/taxonomy
 
 
-Now, if this fails, we download a pre-build taxonomy database for krona:
+
+.. ATTENTION::
+   Should this fail we can download a pre-build database on the :ref:`downloads` page via a browser.
+
+
+Once you have downloaded the file, follow these steps:
 
 
 .. code-block:: sh
-
-   # Download pre-build database
-   $ curl -O http://compbio.massey.ac.nz/data/taxonomy.tab.gz
 
    # we unzip the file
    $ gzip -d taxonomy.tab.gz
@@ -487,8 +489,6 @@ Now, if this fails, we download a pre-build taxonomy database for krona:
    $ mv taxonomy.tab ~/krona/taxonomy
 
 
-.. ATTENTION::
-   Should this also fail we can download a pre-build database on the :ref:`downloads` page via a browser.
 
 
 Visualise

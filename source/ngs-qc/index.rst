@@ -207,7 +207,7 @@ Here, as an example we are trimming the sequence reads of the ancestor:
 
 .. hint::
 
-   Should you not get the commands together to trim the evolved samples, have a look at the coding solutions at :ref:`code-fastp`. Should you be unable to run |fastp| at all to trim the data. You can download the trimmed dataset `here <http://compbio.massey.ac.nz/data/203341/trimmed.tar.gz>`__. Unarchive and uncompress the files with ``tar -xvzf trimmed.tar.gz``.
+   Should you not get the commands together to trim the evolved samples, have a look at the coding solutions at :ref:`code-fastp`. Should you be unable to run |fastp| at all to trim the data. You can download the trimmed dataset `here <https://osf.io/m3wpr/download>`__. Unarchive and uncompress the files with ``tar -xvzf trimmed.tar.gz``.
 
 
 

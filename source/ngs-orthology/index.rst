@@ -55,9 +55,14 @@ Make a directory for the phylogeny results (in your analysis directory):
 Download the fasta file of the *S. cerevisiase* TEF2 gene to the phylogeny folder:
 
 
+.. attention::
+
+    Download from compbio not working. Also need to update the file to ecoli.
+
 .. code:: sh
 
     $ cd phylogeny
+    ## TODO NOT WORKING
     $ curl -O http://compbio.massey.ac.nz/data/203341/s_cerev_tef2.fas
 
 
@@ -150,8 +155,14 @@ Now we will |blast| a remote database to get a list of hits that are already in 
    It turns out you may not be able to access this database from within the Linux distribution. In such a case, download the file named ``blast.fas`` and place it into your ``~/analysis/phylogeny/`` directory.
 
 
+.. attention::
+
+    Download from compbio not working. Also need to update the file to ecoli.
+
+
 .. code:: sh
 
+    ## TODO NOT WORKING
     $ curl -O http://compbio.massey.ac.nz/data/203341/blast_u.fas
 
 
