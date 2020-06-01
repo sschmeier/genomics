@@ -304,11 +304,13 @@ rst_epilog = """
 .. |blast| replace:: `BLAST <https://blast.ncbi.nlm.nih.gov/Blast.cgi>`__
 .. |igv| replace:: `IGV <http://software.broadinstitute.org/software/igv/>`__
 .. |muscle| replace:: `MUSCLE <http://www.ebi.ac.uk/Tools/msa/muscle/>`__
-.. |raxml| replace:: `RAxML-NG <https://github.com/amkozlov/raxml-ng>`__
+.. |raxml| replace:: `RAxML <https://github.com/stamatak/standard-RAxML>`__
 .. |snpeff| replace:: `SnpEff  <http://snpeff.sourceforge.net/index.html>`__
 .. |fastp| replace:: `fastp <hhttps://github.com/OpenGene/fastp>`__
 .. |multiqc| replace:: `MultiQC <https://multiqc.info/>`__
-.. |prokka| replace:: `Prokka <https://github.com/tseemann/prokka>`__ 
+.. |prokka| replace:: `Prokka <https://github.com/tseemann/prokka>`__
+.. |mafft| replace:: `MAFFT <https://mafft.cbrc.jp/alignment/software/>`__ 
+.. |iqtree| replace:: `IQ-TREE <http://www.iqtree.org/>`__
 """
 
 # to be able to use two dashes in my own blocks I turn off smartypants
