@@ -129,7 +129,8 @@ Next, we are formating the result into fasta-format using the program ``awk``:
 
 
 
-Append the fasta file of your yeast sequence to this file, using whatever set of commands you wish/know. For example:
+Append the fasta file of your E. coli gene to this file, using whatever set of commands you wish/know. 
+For example:
 
 .. code:: sh
 
