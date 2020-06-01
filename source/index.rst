@@ -2,6 +2,10 @@
    sphinx-quickstart on Sat Nov 19 11:54:02 2016.
    You can adapt this file completely to your liking, but it should at least contain the root `toctree` directive.
 
+.. attention::
+
+   This is a **new revised release**, now using data from **E. coli** to speed the analysis steps up. The former tutorial based on fungi data can be accessed at `https://genomics-fungi.sschmeier.com/ <https://genomics-fungi.sschmeier.com/>`__.
+
 Computational Genomics Tutorial
 ===============================
 
